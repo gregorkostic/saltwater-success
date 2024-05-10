@@ -1,19 +1,18 @@
-# saltwater-success
 
-## Project setup
-```
-npm install
-```
+# Saltwater success
+- Author: Gregor Kostić
+- Mentor: doc. dr. sc. Nikola Tanković
+- Study program: Faculty of Informatics in Pula
+- Course: "Software Engineering"
+- Academic year: 2023./2024.
+    
+## About the project
+## Tools that were used
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+- Vue: 2.7.14
+- Firebase: 9.21.0
+- Vuetify: 2.6.0
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Project functionality
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+The application would consist of a fishing course for users. Users will be able to gather information about various fish species for fishing and the techniques required for such activities. Based on the fishing schedule, users will know the periods during which they can go fishing, taking into account additional information such as tide and tidal cycle, moon phase, weather conditions, and more. Furthermore, the application will provide users with information on the types of equipment or tools they will need for fishing. It will display specific recipes for each fish species separately and provide an option for users to share their own experiences with other users.
