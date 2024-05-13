@@ -12,7 +12,7 @@
       <div class="content">
         <h1>Feel The Bite</h1>
         <p>Be among the first to become a professional fisherman</p>
-        <v-btn color="blue" dark>Join Now</v-btn>
+        <v-btn color="blue" dark @click="goToLogin">Join Now</v-btn>
       </div>
       <img
         src="../assets/fish_character.png"
@@ -23,6 +23,16 @@
   </v-app>
 </template>
 
+<script>
+export default {
+  name: "App",
+  methods: {
+    goToLogin() {
+      this.$router.push("/login"); // Preusmjerava na Login.vue
+    },
+  },
+};
+</script>
 <style scoped>
 .background {
   background-image: url(../assets/background.jpg) !important;

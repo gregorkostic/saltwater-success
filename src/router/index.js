@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/LandingPage.vue";
+import Login from "../views/Login.vue"; // Uvoz Login komponente
 
 Vue.use(VueRouter);
 
@@ -13,9 +14,12 @@ const routes = [
   {
     path: "/about",
     name: "about",
-
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    component: () => import("../views/Login.vue"),
+  },
+  {
+    path: "/login", // Putanja za Login
+    name: "login",
+    component: Login, // Komponenta koja se učitava
   },
 ];
 
