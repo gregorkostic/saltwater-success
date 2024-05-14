@@ -1,7 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/LandingPage.vue";
-import Login from "../views/Login.vue"; // Uvoz Login komponente
+import Login from "../views/Login.vue";
+import SignUp from "../views/SignUp.vue";
 
 Vue.use(VueRouter);
 
@@ -20,6 +21,11 @@ const routes = [
     path: "/login", // Putanja za Login
     name: "login",
     component: Login, // Komponenta koja se učitava
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: SignUp,
   },
 ];
 

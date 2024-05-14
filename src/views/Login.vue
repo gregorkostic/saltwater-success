@@ -30,7 +30,6 @@
             @input="clearValidationMsg"
             class="input-field"
           />
-          <!-- Icon for toggling password visibility -->
           <span @click="togglePasswordVisibility" class="password-toggle">
             <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
           </span>
