@@ -10,7 +10,7 @@
  Tools that were used
 
 - Vue: 2.7.14
-- Firebase: 9.21.0
+- Firebase: 10.11.1
 - Vuetify: 2.6.0
 
  Project functionality
