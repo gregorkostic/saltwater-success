@@ -8,41 +8,65 @@
       />
       <span class="logo-text">Saltwater Success</span>
     </div>
-    <div class="login-card">
-      <h1>Login</h1>
-      <div class="input-group">
-        <input
-          type="email"
-          v-model="email"
-          placeholder="Email address"
-          @input="clearValidationMsg"
-          :class="{ 'input-error': emailError }"
-        />
-        <span v-if="emailError" class="error-msg">{{ emailError }}</span>
+    <transition name="fade">
+      <div class="login-card" v-if="!showResetModal">
+        <h1>Log in</h1>
+        <div class="input-group" :class="{ 'input-error': emailError }">
+          <input
+            type="email"
+            v-model="email"
+            placeholder="E-mail"
+            @input="clearValidationMsg"
+            @blur="validateEmail"
+            class="input-field"
+          />
+          <span v-if="emailError" class="error-msg">{{ emailError }}</span>
+        </div>
+        <div class="input-group password">
+          <input
+            :type="showPassword ? 'text' : 'password'"
+            v-model="password"
+            placeholder="Password"
+            @input="clearValidationMsg"
+            class="input-field"
+          />
+          <!-- Icon for toggling password visibility -->
+          <span @click="togglePasswordVisibility" class="password-toggle">
+            <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+          </span>
+        </div>
+
+        <button @click="login">Log in</button>
+        <div class="link forgot-pw" @click="forgotPassword">
+          Forgot password?
+        </div>
+        <div class="link signup-link">
+          <span>Don’t have an account? </span>
+          <strong class="clickable" @click="goToSignup">Sign up</strong>
+        </div>
       </div>
-      <div class="input-group password">
-        <input
-          :type="showPassword ? 'text' : 'password'"
-          v-model="password"
-          placeholder="Password"
-          @input="clearValidationMsg"
-        />
-        <span @click="togglePasswordVisibility" class="password-toggle">
-          <i :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-        </span>
+      <div class="reset-modal" v-if="showResetModal">
+        <h2>Reset Password</h2>
+        <div class="input-group" :class="{ 'input-error': resetEmailError }">
+          <input
+            id="resetEmail"
+            type="email"
+            v-model="resetEmail"
+            placeholder="E-mail"
+            @input="clearValidationMsg"
+            @blur="validateResetEmail"
+            class="input-field"
+          />
+          <span v-if="resetEmailError" class="error-msg">{{
+            resetEmailError
+          }}</span>
+        </div>
+        <div class="modal-buttons">
+          <button @click="sendResetLink">Send Reset Link</button>
+          <button @click="closeModal">Cancel</button>
+        </div>
       </div>
-      <button @click="login">Login</button>
-      <div class="link forgot-pw" @click="forgotPassword">Forgot password?</div>
-      <div class="link signup-link blurred" @click="goToSignup">
-        Don't have an account? <span>Sign up</span>
-      </div>
-    </div>
-    <div v-if="showResetModal" class="reset-modal">
-      <h2>Password Reset</h2>
-      <input type="email" v-model="resetEmail" placeholder="Email" />
-      <button @click="sendResetLink">Send Reset Link</button>
-      <button @click="closeModal">Cancel</button>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -53,35 +77,56 @@ export default {
       email: "",
       password: "",
       emailError: "",
+      resetEmail: "",
+      resetEmailError: "",
       showPassword: false,
       showResetModal: false,
-      resetEmail: "",
     };
   },
   methods: {
     login() {
       if (!this.email) {
-        this.emailError = "Email is required";
+        this.emailError = "Email is required.";
         return;
       }
-      // Authentication logic here
     },
     forgotPassword() {
-      this.showResetModal = true; // Show reset modal
+      this.showResetModal = true;
     },
     goToSignup() {
       this.$router.push("/signup");
     },
     clearValidationMsg() {
       this.emailError = "";
+      this.resetEmailError = "";
+    },
+    validateEmail() {
+      if (!this.email) {
+        this.emailError = "Email is required.";
+      } else if (/[čćšđž]/i.test(this.email)) {
+        this.emailError = "Please enter a valid email address.";
+      } else {
+        this.emailError = "";
+      }
+    },
+    validateResetEmail() {
+      if (!this.resetEmail) {
+        this.resetEmailError = "Email is required.";
+      } else if (/[čćšđž]/i.test(this.resetEmail)) {
+        this.resetEmailError = "Please enter a valid email address.";
+      } else {
+        this.resetEmailError = "";
+      }
+    },
+    sendResetLink() {
+      this.validateResetEmail();
+      if (!this.resetEmailError) {
+        alert("Reset link sent to " + this.resetEmail);
+        this.closeModal();
+      }
     },
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
-    },
-    sendResetLink() {
-      // Send reset link logic
-      alert("Reset link sent to " + this.resetEmail);
-      this.closeModal();
     },
     closeModal() {
       this.showResetModal = false;
@@ -91,6 +136,16 @@ export default {
 </script>
 
 <style scoped>
+.clickable {
+  cursor: pointer;
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.clickable:hover {
+  text-decoration: none;
+}
+
 .login-container {
   display: flex;
   justify-content: center;
@@ -116,57 +171,83 @@ export default {
   font-size: 1.5rem;
   font-weight: bold;
 }
-.login-card {
+.login-card,
+.reset-modal {
   background: rgba(255, 255, 255, 0.95);
-  padding: 20px;
+  padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  width: 350px;
   text-align: center;
+  transition: all 0.3s ease-in-out;
 }
 .input-group {
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
-.input-error {
+.input-field {
+  width: 100%;
+  padding: 12px 10px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc; /* Correctly define the border */
+  border-radius: 4px; /* Rounded corners for aesthetics */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+.input-error input {
   border: 2px solid red;
 }
 .error-msg {
   color: red;
-  font-size: 0.8em;
-  margin-top: -5px;
+  font-size: 0.9em;
+  position: absolute;
+  top: 100%;
+  left: 0;
 }
 button {
   width: 100%;
-  padding: 10px;
+  padding: 15px;
   background-color: #0056b3;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 10px;
 }
-.link {
-  color: #0056b3;
-  text-decoration: underline;
+.link,
+.signup-link span {
+  color: #757575; /* Set the default color to a lighter gray */
+  text-decoration: none;
   cursor: pointer;
+  display: block;
+  margin-top: 10px;
 }
+.signup-link strong {
+  color: #0056b3; /* Set the color for 'Sign up' to the theme blue */
+  cursor: pointer; /* Ensures the cursor changes to a pointer when hovered */
+  font-weight: normal; /* Keeps text not bold by default */
+  text-decoration: none; /* No underline by default */
+}
+
+.signup-link strong:hover {
+  text-decoration: underline; /* Underline appears only on hover */
+}
+
 .password-toggle {
+  cursor: pointer;
   position: absolute;
   right: 10px;
-  top: 10px;
-  cursor: pointer;
-  color: #0056b3;
+  top: 51%; /* Center vertically in the input field */
+  transform: translateY(-50%); /* Center alignment adjustment */
+  color: #757575; /* Set the default color to a lighter gray */
 }
-.signup-link blurred span {
-  filter: blur(1px);
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
-.reset-modal {
-  position: absolute;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  text-align: center;
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
