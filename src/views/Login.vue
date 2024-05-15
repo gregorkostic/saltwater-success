@@ -22,7 +22,10 @@
           />
           <span v-if="emailError" class="error-msg">{{ emailError }}</span>
         </div>
-        <div class="input-group password">
+        <div
+          class="input-group password"
+          :class="{ 'input-error': passwordError }"
+        >
           <input
             :type="showPassword ? 'text' : 'password'"
             v-model="password"
@@ -33,8 +36,10 @@
           <span @click="togglePasswordVisibility" class="password-toggle">
             <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
           </span>
+          <span v-if="passwordError" class="error-msg">{{
+            passwordError
+          }}</span>
         </div>
-
         <button @click="login">Log in</button>
         <div class="link forgot-pw" @click="forgotPassword">
           Forgot password?
@@ -76,6 +81,7 @@ export default {
       email: "",
       password: "",
       emailError: "",
+      passwordError: "",
       resetEmail: "",
       resetEmailError: "",
       showPassword: false,
@@ -84,9 +90,12 @@ export default {
   },
   methods: {
     login() {
-      if (!this.email) {
-        this.emailError = "Email is required.";
-        return;
+      this.validateEmail();
+      this.validatePassword();
+      if (!this.emailError && !this.passwordError) {
+        // Simulate successful login
+        // You should replace this with actual authentication logic
+        this.$router.push("/home"); // Preusmjerava na HomePage.vue
       }
     },
     forgotPassword() {
@@ -97,21 +106,31 @@ export default {
     },
     clearValidationMsg() {
       this.emailError = "";
+      this.passwordError = "";
       this.resetEmailError = "";
     },
     validateEmail() {
       if (!this.email) {
         this.emailError = "Email is required.";
-      } else if (/[čćšđž]/i.test(this.email)) {
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
         this.emailError = "Please enter a valid email address.";
       } else {
         this.emailError = "";
       }
     },
+    validatePassword() {
+      if (!this.password) {
+        this.passwordError = "Password is required.";
+      } else if (this.password.length < 6) {
+        this.passwordError = "Password must be at least 6 characters long.";
+      } else {
+        this.passwordError = "";
+      }
+    },
     validateResetEmail() {
       if (!this.resetEmail) {
         this.resetEmailError = "Email is required.";
-      } else if (/[čćšđž]/i.test(this.resetEmail)) {
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.resetEmail)) {
         this.resetEmailError = "Please enter a valid email address.";
       } else {
         this.resetEmailError = "";
@@ -154,6 +173,7 @@ export default {
   background-size: cover;
   background-position: center;
 }
+
 .top-left-bar {
   position: absolute;
   top: 1%;
@@ -162,14 +182,17 @@ export default {
   align-items: center;
   color: white;
 }
+
 .login-logo {
   max-height: 60px;
   margin-right: 10px;
 }
+
 .logo-text {
   font-size: 1.5rem;
   font-weight: bold;
 }
+
 .login-card,
 .reset-modal {
   background: rgba(255, 255, 255, 0.95);
@@ -180,22 +203,26 @@ export default {
   text-align: center;
   transition: all 0.3s ease-in-out;
 }
+
 .input-group {
   position: relative;
   margin-bottom: 20px;
 }
+
 .input-field {
   width: 100%;
   padding: 12px 10px;
   margin: 8px 0;
   display: inline-block;
-  border: 1px solid #ccc; /* Correctly define the border */
-  border-radius: 4px; /* Rounded corners for aesthetics */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
+
 .input-error input {
   border: 2px solid red;
 }
+
 .error-msg {
   color: red;
   font-size: 0.9em;
@@ -203,6 +230,7 @@ export default {
   top: 100%;
   left: 0;
 }
+
 button {
   width: 100%;
   padding: 15px;
@@ -213,38 +241,41 @@ button {
   cursor: pointer;
   margin-top: 10px;
 }
+
 .link,
 .signup-link span {
-  color: #757575; /* Set the default color to a lighter gray */
+  color: #757575;
   text-decoration: none;
   cursor: pointer;
   display: block;
   margin-top: 10px;
 }
+
 .signup-link strong {
-  color: #0056b3; /* Set the color for 'Sign up' to the theme blue */
-  cursor: pointer; /* Ensures the cursor changes to a pointer when hovered */
-  font-weight: normal; /* Keeps text not bold by default */
-  text-decoration: none; /* No underline by default */
+  color: #0056b3;
+  cursor: pointer;
+  font-weight: normal;
+  text-decoration: none;
 }
 
 .signup-link strong:hover {
-  text-decoration: underline; /* Underline appears only on hover */
+  text-decoration: underline;
 }
 
 .password-toggle {
   cursor: pointer;
   position: absolute;
   right: 10px;
-  top: 51%; /* Center vertically in the input field */
-  transform: translateY(-50%); /* Center alignment adjustment */
-  color: #757575; /* Set the default color to a lighter gray */
+  top: 51%;
+  transform: translateY(-50%);
+  color: #757575;
 }
 
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
 }
+
 .fade-enter,
 .fade-leave-to {
   opacity: 0;

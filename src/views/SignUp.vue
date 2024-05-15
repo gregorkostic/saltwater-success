@@ -150,7 +150,10 @@ export default {
         this.password &&
         this.password === this.confirmPassword
       ) {
+        // Simulate successful registration
+        // You should replace this with actual registration logic
         alert("Registration successful!");
+        this.$router.push("/home"); // Preusmjerava na HomePage.vue
       }
     },
     togglePasswordVisibility() {
@@ -173,6 +176,7 @@ export default {
   background-size: cover;
   background-position: center;
 }
+
 .top-left-bar {
   position: absolute;
   top: 1%;
@@ -181,14 +185,17 @@ export default {
   align-items: center;
   color: white;
 }
+
 .login-logo {
   max-height: 60px;
   margin-right: 10px;
 }
+
 .logo-text {
   font-size: 1.5rem;
   font-weight: bold;
 }
+
 .login-card {
   background: rgba(255, 255, 255, 0.95);
   padding: 40px;
@@ -198,10 +205,12 @@ export default {
   text-align: center;
   transition: all 0.3s ease-in-out;
 }
+
 .input-group {
   position: relative;
   margin-bottom: 20px;
 }
+
 .input-field {
   width: 100%;
   padding: 12px 10px;
@@ -211,9 +220,11 @@ export default {
   border-radius: 4px;
   box-sizing: border-box;
 }
+
 .input-error input {
   border: 2px solid red;
 }
+
 .error-msg {
   color: red;
   font-size: 0.9em;
@@ -221,6 +232,7 @@ export default {
   top: 100%;
   left: 0;
 }
+
 .button {
   width: 100%;
   padding: 15px;
@@ -231,6 +243,7 @@ export default {
   cursor: pointer;
   margin-top: 10px;
 }
+
 .password-toggle {
   cursor: pointer;
   position: absolute;
@@ -239,10 +252,12 @@ export default {
   transform: translateY(-50%);
   color: #757575;
 }
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
 }
+
 .fade-enter,
 .fade-leave-to {
   opacity: 0;

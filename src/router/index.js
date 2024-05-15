@@ -1,31 +1,67 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "../views/LandingPage.vue";
+import HomeView from "../views/HomePage.vue";
 import Login from "../views/Login.vue";
 import SignUp from "../views/SignUp.vue";
+import FishInfo from "../views/FishInfo.vue";
+import FishingTechniques from "../views/FishingTechniques.vue";
+import FishingSchedule from "../views/FishingSchedule.vue";
+import Equipment from "../views/Equipment.vue";
+import Recipes from "../views/Recipes.vue";
+import UserExperiences from "../views/UserExperiences.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
+    name: "landing",
+    component: () => import("../views/LandingPage.vue"),
+  },
+  {
+    path: "/home",
     name: "home",
     component: HomeView,
   },
   {
-    path: "/about",
-    name: "about",
-    component: () => import("../views/Login.vue"),
-  },
-  {
-    path: "/login", // Putanja za Login
+    path: "/login",
     name: "login",
-    component: Login, // Komponenta koja se učitava
+    component: Login,
   },
   {
     path: "/signup",
     name: "signup",
     component: SignUp,
+  },
+  {
+    path: "/fish-info",
+    name: "fish-info",
+    component: FishInfo,
+  },
+  {
+    path: "/fishing-techniques",
+    name: "fishing-techniques",
+    component: FishingTechniques,
+  },
+  {
+    path: "/fishing-schedule",
+    name: "fishing-schedule",
+    component: FishingSchedule,
+  },
+  {
+    path: "/equipment",
+    name: "equipment",
+    component: Equipment,
+  },
+  {
+    path: "/recipes",
+    name: "recipes",
+    component: Recipes,
+  },
+  {
+    path: "/user-experiences",
+    name: "user-experiences",
+    component: UserExperiences,
   },
 ];
 
