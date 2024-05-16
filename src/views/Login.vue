@@ -176,15 +176,15 @@ export default {
 
 .top-left-bar {
   position: absolute;
-  top: 1%;
-  left: 0.5%;
+  top: 1.3%;
+  left: 0.84%;
   display: flex;
   align-items: center;
   color: white;
 }
 
 .login-logo {
-  max-height: 60px;
+  max-height: 40px;
   margin-right: 10px;
 }
 

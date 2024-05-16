@@ -11,7 +11,7 @@
 import NavBar from "@/components/NavBar.vue";
 
 export default {
-  name: "FishingSchedule",
+  name: "MyAccount",
   components: {
     NavBar,
   },

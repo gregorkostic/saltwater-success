@@ -1,55 +1,29 @@
 <template>
-  <v-app-bar app color="primary" dark>
-    <v-toolbar-title class="white--text">
-      <router-link to="/" class="white--text no-underline">
-        Saltwater Success
-      </router-link>
+  <v-app-bar app flat color="transparent">
+    <v-toolbar-title class="white--text logo-container">
+      <div class="white--text no-underline logo-link">
+        <img
+          src="../assets/fish_logo.png"
+          alt="Saltwater Success Logo"
+          class="logo-img"
+        />
+        <span class="logo-text">Saltwater Success</span>
+      </div>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-btn text>
-      <router-link to="/fish-info" class="white--text no-underline"
-        >Informacije o ribama</router-link
+      <router-link to="/home" class="white--text no-underline"
+        >Explore</router-link
       >
     </v-btn>
     <v-btn text>
-      <router-link to="/fishing-techniques" class="white--text no-underline"
-        >Tehnike ribolova</router-link
+      <router-link to="/my-account" class="white--text no-underline"
+        >My Account</router-link
       >
     </v-btn>
-    <v-btn text>
-      <router-link to="/fishing-schedule" class="white--text no-underline"
-        >Raspored ribolova</router-link
-      >
-    </v-btn>
-    <v-btn text>
-      <router-link to="/equipment" class="white--text no-underline"
-        >Oprema za ribolov</router-link
-      >
-    </v-btn>
-    <v-btn text>
-      <router-link to="/recipes" class="white--text no-underline"
-        >Recepti</router-link
-      >
-    </v-btn>
-    <v-btn text>
-      <router-link to="/user-experiences" class="white--text no-underline"
-        >Iskustva korisnika</router-link
-      >
-    </v-btn>
-    <v-btn text @click="signOut" class="sign-out"> Sign Out </v-btn>
+    <v-btn text @click="signOut" class="sign-out">Sign Out</v-btn>
   </v-app-bar>
 </template>
-
-<script>
-export default {
-  name: "NavBar",
-  methods: {
-    signOut() {
-      this.$router.push("/"); // Redirect to landing page
-    },
-  },
-};
-</script>
 
 <style scoped>
 .no-underline {
@@ -57,9 +31,26 @@ export default {
 }
 .v-btn {
   font-size: 0.9rem;
+  color: white !important;
 }
 .sign-out {
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
   padding-left: 10px;
+  color: white !important;
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+.logo-img {
+  max-height: 40px;
+  margin-right: 10px;
+}
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 </style>

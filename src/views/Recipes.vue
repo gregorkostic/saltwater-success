@@ -1,53 +1,35 @@
 <template>
-  <div class="info-container">
-    <div class="top-left-bar">
-      <img
-        src="../assets/fish_logo.png"
-        alt="Saltwater Success Logo"
-        class="info-logo"
-      />
-      <span class="logo-text">Saltwater Success</span>
+  <v-app>
+    <NavBar />
+    <div class="background">
+      <!-- v-container and v-row elements are removed to eliminate the cards -->
     </div>
-    <h1>Recepti</h1>
-    <!-- Dodaj sadržaj o receptima ovdje -->
-  </div>
+  </v-app>
 </template>
 
 <script>
+import NavBar from "@/components/NavBar.vue";
+
 export default {
   name: "Recipes",
+  components: {
+    NavBar,
+  },
 };
 </script>
 
 <style scoped>
-.info-container {
+.background {
+  background-image: url(../assets/background.jpg) !important;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  background-image: url("../assets/background.jpg");
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh;
-  color: white;
+  justify-content: center;
   text-align: center;
-}
-
-.top-left-bar {
-  position: absolute;
-  top: 1%;
-  left: 0.5%;
-  display: flex;
-  align-items: center;
-}
-
-.info-logo {
-  max-height: 60px;
-  margin-right: 10px;
-}
-
-.logo-text {
-  font-size: 1.5rem;
-  font-weight: bold;
+  padding: 20px;
 }
 </style>

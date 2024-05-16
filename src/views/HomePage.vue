@@ -1,14 +1,7 @@
 <template>
   <v-app>
+    <NavBar />
     <div class="background">
-      <div class="top-left-bar">
-        <img
-          src="../assets/fish_logo.png"
-          alt="Saltwater Success Logo"
-          class="logo"
-        />
-        <span class="logo-text">Saltwater Success</span>
-      </div>
       <div class="content">
         <h1>Dobrodošli u Saltwater Success</h1>
         <p>Vaš izvor za sve informacije o ribolovu.</p>
@@ -108,8 +101,13 @@
 </template>
 
 <script>
+import NavBar from "@/components/NavBar.vue";
+
 export default {
   name: "HomePage",
+  components: {
+    NavBar,
+  },
 };
 </script>
 
@@ -126,25 +124,6 @@ export default {
   justify-content: center;
   text-align: center;
   padding: 20px;
-}
-
-.top-left-bar {
-  position: absolute;
-  top: 1%;
-  left: 0.5%;
-  display: flex;
-  align-items: center;
-  color: white;
-}
-
-.logo {
-  max-height: 60px;
-  margin-right: 10px;
-}
-
-.logo-text {
-  font-size: 1.5rem;
-  font-weight: bold;
 }
 
 .content {

@@ -9,6 +9,7 @@ import FishingSchedule from "../views/FishingSchedule.vue";
 import Equipment from "../views/Equipment.vue";
 import Recipes from "../views/Recipes.vue";
 import UserExperiences from "../views/UserExperiences.vue";
+import MyAccount from "../views/MyAccount.vue"; // Import MyAccount.vue
 
 Vue.use(VueRouter);
 
@@ -62,6 +63,11 @@ const routes = [
     path: "/user-experiences",
     name: "user-experiences",
     component: UserExperiences,
+  },
+  {
+    path: "/my-account",
+    name: "my-account",
+    component: MyAccount, // Add route for MyAccount.vue
   },
 ];
 
