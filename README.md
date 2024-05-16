@@ -5,6 +5,7 @@
 - Study program: Faculty of Informatics in Pula
 - Course: "Software Engineering"
 - Academic year: 2023./2024.
+- https://incandescent-fenglisu-f9c69f.netlify.app/login
     
 ## About the project
 ### Tools that were used
