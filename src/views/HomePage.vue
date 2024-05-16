@@ -4,7 +4,9 @@
     <div class="background">
       <div class="content">
         <h1>Dobrodošli u Saltwater Success</h1>
-        <p>Vaš izvor za sve informacije o ribolovu.</p>
+        <p>
+          Vaš izvor za sve informacije o ribolovu u Jadranskom moru (Croatia)
+        </p>
       </div>
       <v-container fluid>
         <v-row>
