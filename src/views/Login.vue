@@ -94,8 +94,8 @@ export default {
       this.validatePassword();
       if (!this.emailError && !this.passwordError) {
         // Simulate successful login
-        // You should replace this with actual authentication logic
-        this.$router.push("/home"); // Preusmjerava na HomePage.vue
+
+        this.$router.push("/home");
       }
     },
     forgotPassword() {

@@ -151,9 +151,9 @@ export default {
         this.password === this.confirmPassword
       ) {
         // Simulate successful registration
-        // You should replace this with actual registration logic
+
         alert("Registration successful!");
-        this.$router.push("/home"); // Preusmjerava na HomePage.vue
+        this.$router.push("/home");
       }
     },
     togglePasswordVisibility() {

@@ -28,7 +28,7 @@ export default {
   name: "App",
   methods: {
     goToLogin() {
-      this.$router.push("/login"); // Preusmjerava na Login.vue
+      this.$router.push("/login");
     },
   },
 };
@@ -90,13 +90,13 @@ p {
 }
 
 .v-btn {
-  background-color: #007bff; /* Slightly darker shade of blue */
+  background-color: #007bff;
   color: white;
   padding: 10px 20px;
   border: none;
   cursor: pointer;
   font-size: 1.2rem;
-  border-radius: 20px; /* Rounded corners */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds subtle shadow */
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 </style>

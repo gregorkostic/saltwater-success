@@ -25,6 +25,19 @@
   </v-app-bar>
 </template>
 
+<script>
+import router from "@/router";
+
+export default {
+  name: "NavBar",
+  methods: {
+    signOut() {
+      router.push("/");
+    },
+  },
+};
+</script>
+
 <style scoped>
 .no-underline {
   text-decoration: none;

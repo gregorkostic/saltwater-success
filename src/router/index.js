@@ -9,7 +9,8 @@ import FishingSchedule from "../views/FishingSchedule.vue";
 import Equipment from "../views/Equipment.vue";
 import Recipes from "../views/Recipes.vue";
 import UserExperiences from "../views/UserExperiences.vue";
-import MyAccount from "../views/MyAccount.vue"; // Import MyAccount.vue
+import MyAccount from "../views/MyAccount.vue";
+import LandingPage from "../views/LandingPage.vue";
 
 Vue.use(VueRouter);
 
@@ -17,7 +18,7 @@ const routes = [
   {
     path: "/",
     name: "landing",
-    component: () => import("../views/LandingPage.vue"),
+    component: LandingPage,
   },
   {
     path: "/home",
@@ -67,7 +68,7 @@ const routes = [
   {
     path: "/my-account",
     name: "my-account",
-    component: MyAccount, // Add route for MyAccount.vue
+    component: MyAccount,
   },
 ];
 
