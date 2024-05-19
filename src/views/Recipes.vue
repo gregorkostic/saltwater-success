@@ -39,10 +39,20 @@
                   </div>
                   <v-img :src="selectedFish.dishImage" class="dish-img"></v-img>
                 </div>
+                <div class="actions">
+                  <v-btn color="primary" @click="selectedFish = null">
+                    Back to Recipes
+                  </v-btn>
+                  <div class="feedback-buttons">
+                    <v-btn color="blue" @click="likeRecipe">
+                      <i class="fas fa-thumbs-up"></i> Like
+                    </v-btn>
+                    <v-btn color="red" @click="dislikeRecipe">
+                      <i class="fas fa-thumbs-down"></i> Dislike
+                    </v-btn>
+                  </div>
+                </div>
               </v-card-text>
-              <v-btn color="primary" @click="selectedFish = null"
-                >Back to Recipes</v-btn
-              >
             </v-card>
           </v-col>
         </v-row>
@@ -69,28 +79,34 @@ export default {
           source:
             "https://www.morski.hr/zelina-kuzina-lubin-ili-brancin-pecen-u-soli/",
           recipe: `
-            <h3>Lubin ili Brancin pečen u soli</h3>
-            <p>
-              <strong>Sastojci:</strong>
-              <ul>
-                <li>1 brancin (lubin), oko 1 kg</li>
-                <li>2 kg krupne morske soli</li>
-                <li>1 limun</li>
-                <li>Maslinovo ulje</li>
-                <li>Ružmarin</li>
-                <li>Timiijan</li>
-              </ul>
-            </p>
-            <p>
-              <strong>Priprema:</strong>
-              <ol>
-                <li>Ribu očistite, odstranite škrge i iznutrice, ali ne uklanjajte ljuske.</li>
-                <li>Ribu napunite kriškama limuna i začinima.</li>
-                <li>U posudu za pečenje stavite sloj soli, položite ribu i prekrijte je ostatkom soli.</li>
-                <li>Pecite u prethodno zagrijanoj pećnici na 200°C oko 45 minuta.</li>
-                <li>Nakon pečenja, pažljivo uklonite sol i skinite kožu s ribe.</li>
-              </ol>
-            </p>`,
+        <h3>Lubin ili Brancin pečen u soli</h3>
+        <p>
+          <strong>Sastojci:</strong>
+          <ul>
+            <li>Lubin (brancin); 1 kom cca. 1,5 kg težine (ili 4 kom cca. 0,40 kg)</li>
+            <li>Maslinovo ulje; 1-1,5 dcl</li>
+            <li>Sol krupna; 2-3 kg</li>
+            <li>Češnjak; 1 režanj</li>
+            <li>Peršin; 2 grančice</li>
+            <li>Limun; 1 tanak fetaš</li>
+            <li>Bjelanjak od 1 jajeta</li>
+            <li>Papar, po osobnom ukusu</li>
+            <li>Krumpir; 1 kg</li>
+            <li>Rajčice, kvasac, kapula i paprika za salatu</li>
+            <li>Domaći kvasini ili aceto balsamico</li>
+          </ul>
+        </p>
+        <p>
+          <strong>Priprema:</strong>
+          <ol>
+            <li>Ribu očistite, odstranite škrge i iznutrice, ali ne uklanjajte ljuske.</li>
+            <li>Ribu napunite kriškama limuna i začinima.</li>
+            <li>U posudu za pečenje stavite sloj soli, položite ribu i prekrijte je ostatkom soli.</li>
+            <li>Pecite u prethodno zagrijanoj pećnici na 200°C oko 45 minuta.</li>
+            <li>Nakon pečenja, pažljivo uklonite sol i skinite kožu s ribe.</li>
+            <li>Dobar tek!</li>
+          </ol>
+        </p>`,
         },
         {
           name: "Orada",
@@ -99,30 +115,36 @@ export default {
           source:
             "https://web.coolinarika.com/recept/orada-iz-pecnice-d53c3194-63c8-11eb-bf2b-0242ac120090",
           recipe: `
-            <h3>Orada iz pećnice</h3>
-            <p>
-              <strong>Sastojci:</strong>
-              <ul>
-                <li>1 orada, oko 1 kg</li>
-                <li>2 krumpira</li>
-                <li>2 mrkve</li>
-                <li>1 crvena paprika</li>
-                <li>1 limun</li>
-                <li>Maslinovo ulje</li>
-                <li>Ružmarin</li>
-                <li>Sol i papar</li>
-              </ul>
-            </p>
-            <p>
-              <strong>Priprema:</strong>
-              <ol>
-                <li>Oradu očistite i posolite.</li>
-                <li>Povrće narežite na kriške i posložite u posudu za pečenje.</li>
-                <li>Na povrće položite oradu i prelijte maslinovim uljem.</li>
-                <li>Pecite u pećnici zagrijanoj na 180°C oko 45 minuta.</li>
-                <li>Poslužite uz limun i začinsko bilje.</li>
-              </ol>
-            </p>`,
+        <h3>Orada iz pećnice</h3>
+        <p>
+          <strong>Sastojci:</strong>
+          <ul>
+            <li>2 komada orada</li>
+            <li>2 dl bijelog vina</li>
+            <li>1 manja glavica češnjaka</li>
+            <li>1½ dl maslinovog ulja</li>
+            <li>Sol</li>
+            <li>Svježe mljeveni papar</li>
+            <li>Mediteranski začin Vegeta</li>
+            <li>Grančica ružmarina</li>
+            <li>1 limun</li>
+            <li>½ kg blitve</li>
+            <li>40 dag krumpira</li>
+          </ul>
+        </p>
+        <p>
+          <strong>Priprema:</strong>
+          <ol>
+            <li>Češnjak očistimo i protisnemo, te ga pomiješamo sa vinom i ostavimo neka odstoji oko 2 sata, kako bi vino upilo češnjak.</li>
+            <li>U drugu posudu sa uljem pomiješamo svježe mljeveni papar i mediteranske začine.</li>
+            <li>Ribu očistimo, operemo i papirnatim ubrusom posušimo, uzdužno prerežemo, posolimo i namažemo pripremljenim uljem uz pomoć grančice ružmarina.</li>
+            <li>Ostatak ovog ulja pomiješamo s prehodno pripremljenim vinom i češnjakom.</li>
+            <li>Namazanu ribu stavimo u malo pouljenu vatrostalnu posudu i pečemo poklopljeno u zagrijanoj pećnici na 200 °C oko 50 minuta. (Ako nemate poklopac, stavite foliju).</li>
+            <li>Dok se peče, ribu premažujemo mješavinom bijelog vina s češnjakom i preostalim uljem kojim smo ribu prethodno premazali.</li>
+            <li>Za vrijeme dok se riba peče očistimo i operemo blitvu i krumpir. Krumpir narežemo na kockice i stavimo kuhati u posoljenu hladnu vodu. Nakon 15-tak minuta dodamo blitvu, na listiće narezan češnjak, malo maslinovog ulja i sve zajedno još kuhamo 5-7 minuta, pa procijedimo i poslužimo uz ribu.</li>
+            <li>Dobar tek!</li>
+          </ol>
+        </p>`,
         },
         {
           name: "Škarpina",
@@ -131,30 +153,35 @@ export default {
           source:
             "https://www.podravka.hr/recept/787868/socna-pecena-skarpina/",
           recipe: `
-            <h3>Sočna pečena škarpina</h3>
-            <p>
-              <strong>Sastojci:</strong>
-              <ul>
-                <li>1 škarpina, oko 1 kg</li>
-                <li>4 krumpira</li>
-                <li>2 luka</li>
-                <li>2 rajčice</li>
-                <li>Maslinovo ulje</li>
-                <li>Ružmarin</li>
-                <li>Sol i papar</li>
-              </ul>
-            </p>
-            <p>
-              <strong>Priprema:</strong>
-              <ol>
-                <li>Škarpinu očistite i posolite.</li>
-                <li>Krumpire narežite na ploške i stavite u posudu za pečenje.</li>
-                <li>Dodajte narezani luk i rajčice.</li>
-                <li>Na povrće položite škarpinu, prelijte maslinovim uljem i pospite ružmarinom.</li>
-                <li>Pecite u pećnici zagrijanoj na 200°C oko 45 minuta.</li>
-                <li>Poslužite uz salatu po želji.</li>
-              </ol>
-            </p>`,
+        <h3>Pečena škarpina uz krumpir</h3>
+        <p>
+          <strong>Sastojci:</strong>
+          <ul>
+            <li>800 g škarpine</li>
+            <li>150 g luka</li>
+            <li>350 g paprike</li>
+            <li>200 g cherry rajčica</li>
+            <li>100 ml vode</li>
+            <li>1 češnjak češnjaka</li>
+            <li>1 žličica Vegete</li>
+            <li>1 prstohvat Vegeta Maestro crnog papra mljevenog</li>
+            <li>100 ml maslinovog ulja</li>
+            <li>1 žlica nasjeckanog peršina</li>
+            <li>Dobar tek!</li>
+          </ul>
+        </p>
+        <p>
+          <strong>Priprema:</strong>
+          <ol>
+            <li>Škarpinu dobro očistite, operite, posolite i stavite u prikladnu tepsiju.</li>
+            <li>U posudi pomiješajte luk narezan na ploške i papriku narezanu na rezance.</li>
+            <li>Male rajčice 10-15 sekundi uronite u kipuću vodu, pa ih ogulite. Prerežite ih napola i dodajte paprici.</li>
+            <li>Dodajte protisnuti češnjak, Vegetu, sol, papar, maslinovo ulje, dobro promiješajte i zalijte preko ribe.</li>
+            <li>Ribu stavite peći u pećnicu zagrijanu na 180°C i pecite 40 minuta povremeno zalijevajući vodom.</li>
+            <li>Posluživanje: Pečenu škarpinu i povrće posipajte nasjeckanim peršinom te poslužite s kuhanom ili prženom rižom.</li>
+            <li>Dobar tek!</li>
+          </ol>
+        </p>`,
         },
         {
           name: "Zubatac",
@@ -163,37 +190,49 @@ export default {
           source:
             "https://ordinacija.tv/zubatac-riba-za-zdravlje-srca-recept-za-pripremu/",
           recipe: `
-            <h3>Zubatac pečen u pećnici</h3>
-            <p>
-              <strong>Sastojci:</strong>
-              <ul>
-                <li>1 zubatac, oko 1.5 kg</li>
-                <li>4 krumpira</li>
-                <li>2 mrkve</li>
-                <li>2 limuna</li>
-                <li>Maslinovo ulje</li>
-                <li>Ružmarin</li>
-                <li>Sol i papar</li>
-              </ul>
-            </p>
-            <p>
-              <strong>Priprema:</strong>
-              <ol>
-                <li>Zubaca očistite i posolite.</li>
-                <li>Krumpire i mrkve narežite na ploške i stavite u posudu za pečenje.</li>
-                <li>Dodajte narezane limune.</li>
-                <li>Na povrće položite zubaca, prelijte maslinovim uljem i pospite ružmarinom.</li>
-                <li>Pecite u pećnici zagrijanoj na 200°C oko 1 sat.</li>
-              </ol>
-            </p>`,
+        <h3>Pečeni zubatac</h3>
+        <p>
+          <strong>Sastojci:</strong>
+          <ul>
+            <li>1,5 kg zubaca</li>
+            <li>2 dl maslinovog ulja</li>
+            <li>1 dl bijelog vina</li>
+            <li>5 češnjaka bijelog luka</li>
+            <li>peršin</li>
+            <li>sol</li>
+            <li>začini po ukusu</li>
+            <li>bijelo brašno</li>
+            <li>kukuruzno brašno</li>
+          </ul>
+        </p>
+        <p>
+          <strong>Priprema:</strong>
+          <ol>
+            <li>Ribu dobro očistiti, oprati i ocijediti. Dok se riba cijedi, pripremite marinadu. U dubljoj posudi pomiješajte maslinovo ulje i vino. Dodajte sitno nasjeckani bijeli luk i peršin.</li>
+            <li> Ocijeđenu ribu dobro posolite i začinite po ukusu, te je stavite u marinadu da odstoji oko sat vremena. Povremeno ribu okrenite kako bi se ravnomjerno marinirala. Pleh za pečenje namastite uljem i dobro zagrijte u pećnici.</li>
+            <li>Pomiješajte bijelo i kukuruzno brašno, pa panirajte ribu. Stavite ribu u zagrijani pleh, prelijte ostatkom marinade i pecite sat vremena na 200 °C.</li>
+            <li>Dobar tek!</li>
+          </ol>
+        </p>`,
         },
       ],
+
       selectedFish: null,
     };
   },
   methods: {
     selectFish(fish) {
       this.selectedFish = fish;
+    },
+    likeRecipe() {
+      this.selectedFish = null;
+      // Here you can add functionality to record the like action
+      console.log("User liked the recipe");
+    },
+    dislikeRecipe() {
+      this.selectedFish = null;
+      // Here you can add functionality to record the dislike action
+      console.log("User disliked the recipe");
     },
   },
 };
@@ -261,13 +300,53 @@ export default {
   border-radius: 10px;
 }
 
-.v-btn {
-  background-color: #1e88e5;
-  color: white;
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Aligns buttons to the left */
   margin-top: 20px;
 }
 
-.v-btn:hover {
+.v-btn {
+  color: white;
+  margin-right: 10px; /* Space between "Back to Recipes" and the next set of buttons */
+}
+
+.feedback-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.v-btn i {
+  margin-right: 5px; /* Space between icon and text */
+}
+
+/* Specific colors for each button */
+.v-btn:first-of-type {
+  background-color: #1e88e5; /* Blue for back button */
+}
+
+.v-btn:first-of-type:hover {
   background-color: #1565c0;
+}
+
+.v-btn:nth-of-type(2),
+.feedback-buttons > .v-btn {
+  background-color: #4caf50; /* Green for like button */
+}
+
+.v-btn:nth-of-type(2):hover,
+.feedback-buttons > .v-btn:hover {
+  background-color: #388e3c;
+}
+
+.v-btn:last-of-type,
+.feedback-buttons > .v-btn:last-of-type {
+  background-color: #f44336; /* Red for dislike button */
+}
+
+.v-btn:last-of-type:hover,
+.feedback-buttons > .v-btn:last-of-type:hover {
+  background-color: #d32f2f;
 }
 </style>

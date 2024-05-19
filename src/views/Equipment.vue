@@ -35,6 +35,20 @@
                         <strong>Preporuke:</strong> Odlični za lov na plitkim i
                         srednjim dubinama, posebno za lov na brancina i oradu.
                       </p>
+                      <div class="feedback-buttons">
+                        <v-btn
+                          color="blue"
+                          @click="likeEquipment('Spinning štapovi')"
+                        >
+                          <i class="fas fa-thumbs-up"></i> Like
+                        </v-btn>
+                        <v-btn
+                          color="red"
+                          @click="dislikeEquipment('Spinning štapovi')"
+                        >
+                          <i class="fas fa-thumbs-down"></i> Dislike
+                        </v-btn>
+                      </div>
                     </div>
                   </div>
 
@@ -55,6 +69,20 @@
                         <strong>Preporuke:</strong> Idealni za lov većih riba
                         poput zubatca u dubokim vodama.
                       </p>
+                      <div class="feedback-buttons">
+                        <v-btn
+                          color="blue"
+                          @click="likeEquipment('Jigging štapovi')"
+                        >
+                          <i class="fas fa-thumbs-up"></i> Like
+                        </v-btn>
+                        <v-btn
+                          color="red"
+                          @click="dislikeEquipment('Jigging štapovi')"
+                        >
+                          <i class="fas fa-thumbs-down"></i> Dislike
+                        </v-btn>
+                      </div>
                     </div>
                     <img
                       src="@/assets/jigging_rod.png"
@@ -85,6 +113,20 @@
                         <strong>Preporuke:</strong> Najbolji izbor za daleke
                         izlete na otvoreno more.
                       </p>
+                      <div class="feedback-buttons">
+                        <v-btn
+                          color="blue"
+                          @click="likeEquipment('Trolling štapovi')"
+                        >
+                          <i class="fas fa-thumbs-up"></i> Like
+                        </v-btn>
+                        <v-btn
+                          color="red"
+                          @click="dislikeEquipment('Trolling štapovi')"
+                        >
+                          <i class="fas fa-thumbs-down"></i> Dislike
+                        </v-btn>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -107,6 +149,16 @@ export default {
   name: "FishingGear",
   components: {
     NavBar,
+  },
+  methods: {
+    likeEquipment(equipment) {
+      // Add functionality to handle like action
+      console.log(`User liked ${equipment}`);
+    },
+    dislikeEquipment(equipment) {
+      // Add functionality to handle dislike action
+      console.log(`User disliked ${equipment}`);
+    },
   },
 };
 </script>
@@ -185,6 +237,33 @@ export default {
 
 .divider {
   margin: 20px 0;
+}
+
+.feedback-buttons {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.feedback-buttons .v-btn {
+  color: white;
+  margin-right: 10px;
+}
+
+.feedback-buttons .v-btn:first-of-type {
+  background-color: #1e88e5; /* Blue for like button */
+}
+
+.feedback-buttons .v-btn:first-of-type:hover {
+  background-color: #1565c0;
+}
+
+.feedback-buttons .v-btn:last-of-type {
+  background-color: #f44336; /* Red for dislike button */
+}
+
+.feedback-buttons .v-btn:last-of-type:hover {
+  background-color: #d32f2f;
 }
 
 .footer {
