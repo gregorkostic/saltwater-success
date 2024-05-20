@@ -71,11 +71,11 @@ export default {
   font-weight: bold;
 }
 .nav-button {
-  border: 2px solid transparent; /* Default transparent border */
-  margin: 0 10px; /* Adjust as needed */
+  border: 2px solid transparent; 
+  margin: 0 10px; 
   transition: border-color 0.3s;
 }
 .nav-button.active {
-  border-color: white; /* White border when active */
+  border-color: white; 
 }
 </style>

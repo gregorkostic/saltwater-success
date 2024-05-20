@@ -125,7 +125,7 @@ export default {
   justify-content: center;
   text-align: center;
   padding: 20px;
-  overflow: hidden; /* Ensure background is static */
+  overflow: hidden;
 }
 
 .overlay {
@@ -134,15 +134,15 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3); /* Dark overlay */
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 1;
 }
 
 .info-card {
   position: relative;
   z-index: 2;
-  max-height: 80vh; /* Limit the card height */
-  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 80vh;
+  overflow-y: auto;
   background-color: rgba(255, 255, 255, 0.85);
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

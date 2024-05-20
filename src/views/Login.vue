@@ -93,8 +93,6 @@ export default {
       this.validateEmail();
       this.validatePassword();
       if (!this.emailError && !this.passwordError) {
-        // Simulate successful login
-
         this.$router.push("/home");
       }
     },

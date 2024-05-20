@@ -165,11 +165,9 @@ export default {
       this.showPassword = !this.showPassword;
     },
     updatePassword() {
-      // Implement password update logic here
       alert("Password updated successfully!");
     },
     deleteAccount() {
-      // Implement account deletion logic here
       alert("Account deleted successfully!");
     },
   },
@@ -232,15 +230,15 @@ export default {
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
-  text-align: left; /* Align text to the left */
+  text-align: left;
 }
 
 .v-card-text p {
-  text-align: left; /* Ensure paragraphs are aligned to the left */
+  text-align: left;
 }
 
 .v-btn,
 .v-checkbox {
-  margin-left: 0; /* Align buttons and checkboxes to the left */
+  margin-left: 0;
 }
 </style>

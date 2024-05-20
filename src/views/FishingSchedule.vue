@@ -121,8 +121,8 @@ export default {
 
 .content-container {
   overflow: auto;
-  max-height: calc(100vh - 100px); /* Ensure content is scrollable */
-  margin-top: 64px; /* Add margin to push content below the navbar */
+  max-height: calc(100vh - 100px);
+  margin-top: 64px;
 }
 
 .heading {
@@ -138,13 +138,13 @@ export default {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
-  max-width: 1000px; /* Adjust max width */
+  max-width: 1000px;
 }
 
 .tides-img,
 .phases-img {
   width: auto;
-  max-width: 100%; /* Ensure images fit within the card */
+  max-width: 100%;
   height: auto;
 }
 

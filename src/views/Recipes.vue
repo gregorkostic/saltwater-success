@@ -226,12 +226,12 @@ export default {
     },
     likeRecipe() {
       this.selectedFish = null;
-      // Here you can add functionality to record the like action
+
       console.log("User liked the recipe");
     },
     dislikeRecipe() {
       this.selectedFish = null;
-      // Here you can add functionality to record the dislike action
+
       console.log("User disliked the recipe");
     },
   },
@@ -303,13 +303,13 @@ export default {
 .actions {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Aligns buttons to the left */
+  justify-content: flex-start;
   margin-top: 20px;
 }
 
 .v-btn {
   color: white;
-  margin-right: 10px; /* Space between "Back to Recipes" and the next set of buttons */
+  margin-right: 10px;
 }
 
 .feedback-buttons {
@@ -318,12 +318,11 @@ export default {
 }
 
 .v-btn i {
-  margin-right: 5px; /* Space between icon and text */
+  margin-right: 5px;
 }
 
-/* Specific colors for each button */
 .v-btn:first-of-type {
-  background-color: #1e88e5; /* Blue for back button */
+  background-color: #1e88e5;
 }
 
 .v-btn:first-of-type:hover {
@@ -332,7 +331,7 @@ export default {
 
 .v-btn:nth-of-type(2),
 .feedback-buttons > .v-btn {
-  background-color: #4caf50; /* Green for like button */
+  background-color: #4caf50;
 }
 
 .v-btn:nth-of-type(2):hover,
@@ -342,7 +341,7 @@ export default {
 
 .v-btn:last-of-type,
 .feedback-buttons > .v-btn:last-of-type {
-  background-color: #f44336; /* Red for dislike button */
+  background-color: #f44336;
 }
 
 .v-btn:last-of-type:hover,
