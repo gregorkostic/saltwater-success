@@ -150,8 +150,6 @@ export default {
         this.password &&
         this.password === this.confirmPassword
       ) {
-        // Simulate successful registration
-
         alert("Registration successful!");
         this.$router.push("/home");
       }
