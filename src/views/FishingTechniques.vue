@@ -96,9 +96,6 @@
           </v-col>
         </v-row>
       </v-container>
-      <footer class="footer">
-        <p>© 2024 Saltwater Success - Tehnike ribolova u Jadranskom moru</p>
-      </footer>
     </div>
   </v-app>
 </template>
@@ -188,18 +185,5 @@ export default {
 
 .divider {
   margin: 20px 0;
-}
-
-.footer {
-  position: relative;
-  z-index: 2;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  width: 100%;
-  padding: 10px;
-  text-align: center;
-  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-  border-radius: 0 0 10px 10px;
 }
 </style>

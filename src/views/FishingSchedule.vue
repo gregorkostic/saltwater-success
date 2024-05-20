@@ -6,6 +6,14 @@
         <v-row justify="center">
           <v-col cols="12" class="heading">
             <h2>Morske mijene (plime i oseke)</h2>
+            <p class="info-text">
+              Morske mijene su periodične promjene razine mora uzrokovane
+              gravitacijskim utjecajem Mjeseca i Sunca. Plima (visoka voda) i
+              oseka (niska voda) izmjenjuju se u pravilnim intervalima, obično
+              dva puta dnevno. Poznavanje vremena plime i oseke ključno je za
+              planiranje ribolova jer mnoge vrste riba postaju aktivnije tijekom
+              određenih faza mijene.
+            </p>
           </v-col>
           <v-col cols="12" md="10" class="d-flex justify-center">
             <v-card class="tides-card">
@@ -51,22 +59,19 @@
           </v-col>
         </v-row>
       </v-container>
-      <footer class="footer">
-        <p>© 2024 Saltwater Success - Raspored ribolova</p>
-      </footer>
     </div>
   </v-app>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
-import image1 from "@/assets/august_2024.png";
-import image2 from "@/assets/december_2024.png";
-import image3 from "@/assets/july_2024.png";
-import image4 from "@/assets/june_2024.png";
-import image5 from "@/assets/november_2024.png";
-import image6 from "@/assets/october_2024.png";
-import image7 from "@/assets/september_2024.png";
+import image1 from "@/assets/june_2024.png";
+import image2 from "@/assets/july_2024.png";
+import image3 from "@/assets/august_2024.png";
+import image4 from "@/assets/september_2024.png";
+import image5 from "@/assets/october_2024.png";
+import image6 from "@/assets/november_2024.png";
+import image7 from "@/assets/december_2024.png";
 
 export default {
   name: "FishingSchedule",
@@ -118,6 +123,7 @@ export default {
   text-align: center;
   color: white;
   margin-bottom: 20px;
+  margin-top: 20px; /* Add margin to the top */
 }
 
 .tides-card,
@@ -147,16 +153,5 @@ export default {
   color: white;
   text-align: center;
   margin-bottom: 20px;
-}
-
-.footer {
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  width: 100%;
-  padding: 10px;
-  text-align: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
 }
 </style>
