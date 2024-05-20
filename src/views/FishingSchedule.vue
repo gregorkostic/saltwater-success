@@ -2,7 +2,7 @@
   <v-app>
     <NavBar />
     <div class="background">
-      <v-container fluid>
+      <v-container fluid class="content-container">
         <v-row justify="center">
           <v-col cols="12" class="heading">
             <h2>Morske mijene (plime i oseke)</h2>
@@ -119,11 +119,16 @@ export default {
   overflow: auto;
 }
 
+.content-container {
+  overflow: auto;
+  max-height: calc(100vh - 100px); /* Ensure content is scrollable */
+  margin-top: 64px; /* Add margin to push content below the navbar */
+}
+
 .heading {
   text-align: center;
   color: white;
   margin-bottom: 20px;
-  margin-top: 20px; /* Add margin to the top */
 }
 
 .tides-card,

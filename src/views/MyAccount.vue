@@ -19,6 +19,14 @@
               <v-btn small color="primary" @click="triggerFileInput">
                 Change Picture
               </v-btn>
+              <v-btn
+                small
+                color="secondary"
+                @click="removeProfilePic"
+                v-if="user.profilePic"
+              >
+                Remove Picture
+              </v-btn>
               <input
                 type="file"
                 @change="uploadProfilePic"
@@ -149,6 +157,9 @@ export default {
     },
     triggerFileInput() {
       this.$refs.fileInput.click();
+    },
+    removeProfilePic() {
+      this.user.profilePic = null;
     },
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;

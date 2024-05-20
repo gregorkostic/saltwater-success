@@ -6,9 +6,7 @@
         <v-row justify="center">
           <v-col cols="12" class="heading">
             <h2>Iskustva korisnika</h2>
-            <p class="info-text">
-              Podijelite svoja iskustva i saznajte više od drugih korisnika.
-            </p>
+            <p class="info-text">Podijelite svoja iskustva.</p>
           </v-col>
           <v-col cols="12" md="8">
             <v-card class="new-post-card">
@@ -18,12 +16,16 @@
                   label="Naslov"
                   v-model="newPost.title"
                   outlined
+                  :rules="[(v) => !!v || 'Naslov je obavezan']"
+                  required
                 ></v-text-field>
                 <v-textarea
                   label="Vaše iskustvo"
                   v-model="newPost.content"
                   outlined
                   rows="4"
+                  :rules="[(v) => !!v || 'Vaše iskustvo je obavezno']"
+                  required
                 ></v-textarea>
                 <v-file-input
                   label="Dodajte sliku"
@@ -31,7 +33,12 @@
                   accept="image/*"
                   outlined
                 ></v-file-input>
-                <v-btn color="primary" @click="createPost">Objavi</v-btn>
+                <v-btn
+                  color="primary"
+                  @click="createPost"
+                  :disabled="!isFormValid"
+                  >Objavi</v-btn
+                >
               </v-card-text>
             </v-card>
           </v-col>
@@ -115,22 +122,29 @@ export default {
       posts: [],
     };
   },
+  computed: {
+    isFormValid() {
+      return this.newPost.title && this.newPost.content;
+    },
+  },
   methods: {
     createPost() {
-      const newPost = {
-        id: uuidv4(),
-        title: this.newPost.title,
-        content: this.newPost.content,
-        image: this.newPost.image
-          ? URL.createObjectURL(this.newPost.image)
-          : null,
-        likes: 0,
-        dislikes: 0,
-        userReaction: null,
-        comments: [],
-      };
-      this.posts.push(newPost);
-      this.resetNewPost();
+      if (this.isFormValid) {
+        const newPost = {
+          id: uuidv4(),
+          title: this.newPost.title,
+          content: this.newPost.content,
+          image: this.newPost.image
+            ? URL.createObjectURL(this.newPost.image)
+            : null,
+          likes: 0,
+          dislikes: 0,
+          userReaction: null,
+          comments: [],
+        };
+        this.posts.push(newPost);
+        this.resetNewPost();
+      }
     },
     resetNewPost() {
       this.newPost.title = "";
