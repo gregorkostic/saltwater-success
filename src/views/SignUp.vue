@@ -89,6 +89,12 @@
 </template>
 
 <script>
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+const auth = getAuth();
+const db = getFirestore();
+
 export default {
   data() {
     return {
@@ -142,16 +148,41 @@ export default {
         this.confirmPasswordError = "";
       }
     },
-    register() {
+    async register() {
+      this.clearValidationMsg();
+      this.validateName();
+      this.validateSurname();
+      this.validateEmail();
+      this.validatePassword();
+      this.validateConfirmPassword();
+
       if (
-        this.name &&
-        this.surname &&
-        this.email &&
-        this.password &&
-        this.password === this.confirmPassword
+        !this.nameError &&
+        !this.surnameError &&
+        !this.emailError &&
+        !this.passwordError &&
+        !this.confirmPasswordError
       ) {
-        alert("Registration successful!");
-        this.$router.push("/home");
+        try {
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            this.email,
+            this.password
+          );
+          const user = userCredential.user;
+
+          await setDoc(doc(db, "Users", this.email.toLowerCase()), {
+            Email: this.email,
+            Name: this.name,
+            Surname: this.surname,
+            AuthorisationType: "USER",
+          });
+
+          alert("Registration successful!");
+          this.$router.push("/home");
+        } catch (error) {
+          alert("An error occurred: " + error.message);
+        }
       }
     },
     togglePasswordVisibility() {
@@ -165,6 +196,16 @@ export default {
 </script>
 
 <style scoped>
+.clickable {
+  cursor: pointer;
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.clickable:hover {
+  text-decoration: none;
+}
+
 .login-container {
   display: flex;
   justify-content: center;
@@ -194,7 +235,8 @@ export default {
   font-weight: bold;
 }
 
-.login-card {
+.login-card,
+.reset-modal {
   background: rgba(255, 255, 255, 0.95);
   padding: 40px;
   border-radius: 10px;
@@ -221,17 +263,17 @@ export default {
 
 .input-error input {
   border: 2px solid red;
+  background-color: #ffdddd;
 }
 
 .error-msg {
   color: red;
   font-size: 0.9em;
-  position: absolute;
-  top: 100%;
-  left: 0;
+  margin-top: 5px;
+  text-align: left;
 }
 
-.button {
+button {
   width: 100%;
   padding: 15px;
   background-color: #0056b3;
@@ -240,6 +282,26 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+}
+
+.link,
+.signup-link span {
+  color: #757575;
+  text-decoration: none;
+  cursor: pointer;
+  display: block;
+  margin-top: 10px;
+}
+
+.signup-link strong {
+  color: #0056b3;
+  cursor: pointer;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.signup-link strong:hover {
+  text-decoration: underline;
 }
 
 .password-toggle {

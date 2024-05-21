@@ -39,9 +39,23 @@
             <v-card class="info-card">
               <v-card-title>Basic Information</v-card-title>
               <v-card-text>
-                <p><strong>First name:</strong> {{ user.name }}</p>
-                <p><strong>Last name:</strong> {{ user.surname }}</p>
-                <p><strong>Email:</strong> {{ user.email }}</p>
+                <v-text-field
+                  v-model="user.name"
+                  label="First name"
+                  outlined
+                ></v-text-field>
+                <v-text-field
+                  v-model="user.surname"
+                  label="Last name"
+                  outlined
+                ></v-text-field>
+                <v-text-field
+                  v-model="user.email"
+                  label="Email"
+                  outlined
+                  readonly
+                ></v-text-field>
+                <v-btn color="primary" @click="updateProfile">Save</v-btn>
               </v-card-text>
             </v-card>
           </v-col>
@@ -49,7 +63,26 @@
             <v-card class="info-card">
               <v-card-title>My Posts</v-card-title>
               <v-card-text>
-                <p v-for="post in userPosts" :key="post.id">{{ post.title }}</p>
+                <div
+                  v-for="(post, index) in userPosts"
+                  :key="index"
+                  class="liked-equipment"
+                >
+                  <div class="equipment-container">
+                    <img
+                      :src="post.image"
+                      :alt="post.title"
+                      class="equipment-img"
+                    />
+                    <p>
+                      <strong>{{ post.title }}</strong>
+                    </p>
+                    <p>{{ post.content }}</p>
+                  </div>
+                  <v-btn icon @click="removeUserPost(post.id)">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </div>
               </v-card-text>
             </v-card>
           </v-col>
@@ -57,9 +90,23 @@
             <v-card class="info-card">
               <v-card-title>My Equipment that I Liked</v-card-title>
               <v-card-text>
-                <p v-for="equipment in likedEquipment" :key="equipment.id">
-                  {{ equipment.name }}
-                </p>
+                <div
+                  v-for="(equipment, index) in likedEquipment"
+                  :key="index"
+                  class="liked-equipment"
+                >
+                  <div class="equipment-container">
+                    <img
+                      :src="equipment.image"
+                      :alt="equipment.name"
+                      class="equipment-img"
+                    />
+                    <p>{{ equipment.name }}</p>
+                  </div>
+                  <v-btn icon @click="removeLikedEquipment(index)">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </div>
               </v-card-text>
             </v-card>
           </v-col>
@@ -67,9 +114,23 @@
             <v-card class="info-card">
               <v-card-title>My Recipes that I Liked</v-card-title>
               <v-card-text>
-                <p v-for="recipe in likedRecipes" :key="recipe.id">
-                  {{ recipe.name }}
-                </p>
+                <div
+                  v-for="(recipe, index) in likedRecipes"
+                  :key="index"
+                  class="liked-equipment"
+                >
+                  <div class="equipment-container">
+                    <img
+                      :src="recipe.dishImage"
+                      :alt="recipe.name"
+                      class="equipment-img"
+                    />
+                    <p>{{ recipe.name }}</p>
+                  </div>
+                  <v-btn icon @click="removeLikedRecipe(index)">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </div>
               </v-card-text>
             </v-card>
           </v-col>
@@ -84,7 +145,6 @@
                   :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   @click:append="togglePasswordVisibility"
                 ></v-text-field>
-
                 <v-text-field
                   v-model="confirmPassword"
                   :type="showPassword ? 'text' : 'password'"
@@ -122,6 +182,17 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import {
+  auth,
+  db,
+  doc,
+  getDoc,
+  setDoc,
+  deleteDoc,
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "../firebase";
 
 export default {
   name: "MyAccount",
@@ -129,22 +200,37 @@ export default {
   data() {
     return {
       user: {
-        name: null,
-        surname: null,
-        email: null,
-        profilePic: null,
+        name: "",
+        surname: "",
+        email: "",
+        profilePic: "",
       },
       defaultProfilePic: require("@/assets/default_profile_img.jpg"),
-      userPosts: [{ id: 1, title: null, content: null }],
-      likedEquipment: [{ id: 1, name: null }],
-      likedRecipes: [{ id: 1, name: null }],
+      userPosts: JSON.parse(localStorage.getItem("userPosts")) || [],
+      likedEquipment: JSON.parse(localStorage.getItem("likedEquipment")) || [],
+      likedRecipes: JSON.parse(localStorage.getItem("likedRecipes")) || [],
       newPassword: "",
       confirmPassword: "",
       showPassword: false,
       confirmDelete: false,
     };
   },
+  created() {
+    this.loadUserProfile();
+  },
   methods: {
+    async loadUserProfile() {
+      const user = auth.currentUser;
+      if (user) {
+        this.user.email = user.email;
+        const userDoc = await getDoc(doc(db, "Users", user.email));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          this.user.name = userData.Name;
+          this.user.surname = userData.Surname;
+        }
+      }
+    },
     uploadProfilePic(event) {
       const file = event.target.files[0];
       if (file) {
@@ -159,16 +245,69 @@ export default {
       this.$refs.fileInput.click();
     },
     removeProfilePic() {
-      this.user.profilePic = null;
+      this.user.profilePic = "";
     },
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
-    updatePassword() {
-      alert("Password updated successfully!");
+    async updateProfile() {
+      const user = auth.currentUser;
+      if (user) {
+        await setDoc(doc(db, "Users", user.email), {
+          Name: this.user.name,
+          Surname: this.user.surname,
+          Email: this.user.email,
+        });
+        alert("Profile updated successfully!");
+      }
     },
-    deleteAccount() {
-      alert("Account deleted successfully!");
+    async updatePassword() {
+      if (this.newPassword !== this.confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const credential = EmailAuthProvider.credential(
+            user.email,
+            this.currentPassword
+          );
+          await reauthenticateWithCredential(user, credential);
+          await updatePassword(user, this.newPassword);
+          alert("Password updated successfully!");
+        }
+      } catch (error) {
+        alert("Error updating password: " + error.message);
+      }
+    },
+    async deleteAccount() {
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          await deleteDoc(doc(db, "Users", user.email));
+          await user.delete();
+          alert("Account deleted successfully!");
+          this.$router.push("/signup");
+        }
+      } catch (error) {
+        alert("Error deleting account: " + error.message);
+      }
+    },
+    removeLikedEquipment(index) {
+      this.likedEquipment.splice(index, 1);
+      localStorage.setItem(
+        "likedEquipment",
+        JSON.stringify(this.likedEquipment)
+      );
+    },
+    removeLikedRecipe(index) {
+      this.likedRecipes.splice(index, 1);
+      localStorage.setItem("likedRecipes", JSON.stringify(this.likedRecipes));
+    },
+    removeUserPost(postId) {
+      this.userPosts = this.userPosts.filter((post) => post.id !== postId);
+      localStorage.setItem("userPosts", JSON.stringify(this.userPosts));
     },
   },
 };
@@ -231,6 +370,26 @@ export default {
   border-radius: 10px;
   margin-bottom: 20px;
   text-align: left;
+}
+
+.liked-equipment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.equipment-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.equipment-img {
+  width: 100px;
+  height: auto;
+  margin-bottom: 5px;
+  border-radius: 5px;
 }
 
 .v-card-text p {

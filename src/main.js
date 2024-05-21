@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
-import "../firebase.js";
+import "./firebase"; // Ensure Firebase initializes
 
 Vue.config.productionTip = false;
 

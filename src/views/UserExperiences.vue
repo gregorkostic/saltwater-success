@@ -119,7 +119,7 @@ export default {
     return {
       newPost: { title: "", content: "", image: null },
       newComment: { content: "" },
-      posts: [],
+      posts: JSON.parse(localStorage.getItem("userPosts")) || [],
     };
   },
   computed: {
@@ -143,6 +143,7 @@ export default {
           comments: [],
         };
         this.posts.push(newPost);
+        localStorage.setItem("userPosts", JSON.stringify(this.posts));
         this.resetNewPost();
       }
     },
@@ -162,6 +163,7 @@ export default {
         post.likes--;
         post.userReaction = null;
       }
+      localStorage.setItem("userPosts", JSON.stringify(this.posts));
     },
     toggleDislike(post) {
       if (post.userReaction === "like") {
@@ -174,9 +176,11 @@ export default {
         post.dislikes--;
         post.userReaction = null;
       }
+      localStorage.setItem("userPosts", JSON.stringify(this.posts));
     },
     deletePost(postId) {
       this.posts = this.posts.filter((post) => post.id !== postId);
+      localStorage.setItem("userPosts", JSON.stringify(this.posts));
     },
     addComment(post) {
       if (this.newComment.content.trim()) {
@@ -187,6 +191,7 @@ export default {
         };
         post.comments.push(newComment);
         this.newComment.content = "";
+        localStorage.setItem("userPosts", JSON.stringify(this.posts));
       }
     },
   },

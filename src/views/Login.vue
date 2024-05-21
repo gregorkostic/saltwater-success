@@ -40,7 +40,7 @@
             passwordError
           }}</span>
         </div>
-        <button @click="login">Log in</button>
+        <button @click="login" class="button">Log in</button>
         <div class="link forgot-pw" @click="forgotPassword">
           Forgot password?
         </div>
@@ -66,8 +66,8 @@
           }}</span>
         </div>
         <div class="modal-buttons">
-          <button @click="sendResetLink">Send Reset Link</button>
-          <button @click="closeModal">Cancel</button>
+          <button @click="sendResetLink" class="button">Send Reset Link</button>
+          <button @click="closeModal" class="button">Cancel</button>
         </div>
       </div>
     </transition>
@@ -75,6 +75,10 @@
 </template>
 
 <script>
+import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
+
+const auth = getAuth();
+
 export default {
   data() {
     return {
@@ -89,11 +93,23 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
       this.validateEmail();
       this.validatePassword();
       if (!this.emailError && !this.passwordError) {
-        this.$router.push("/home");
+        try {
+          await signInWithEmailAndPassword(auth, this.email, this.password);
+          this.$router.push("/home");
+        } catch (error) {
+          if (error.code === "auth/user-not-found") {
+            this.emailError =
+              "This email is not registered. Please sign up first.";
+          } else if (error.code === "auth/wrong-password") {
+            this.passwordError = "Incorrect password. Please try again.";
+          } else {
+            alert("An error occurred: " + error.message);
+          }
+        }
       }
     },
     forgotPassword() {
@@ -219,14 +235,14 @@ export default {
 
 .input-error input {
   border: 2px solid red;
+  background-color: #ffdddd;
 }
 
 .error-msg {
   color: red;
   font-size: 0.9em;
-  position: absolute;
-  top: 100%;
-  left: 0;
+  margin-top: 5px;
+  text-align: left;
 }
 
 button {

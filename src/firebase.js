@@ -1,30 +1,26 @@
-import firebase from "firebase/compat/app";
+// src/firebase.js
+
+import { initializeApp } from "firebase/app";
 import {
+  getAuth,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+} from "firebase/auth";
+import {
+  getFirestore,
   doc,
   addDoc,
   getDoc,
   setDoc,
   getDocs,
-  getFirestore,
   collection,
   query,
   where,
   deleteDoc,
 } from "firebase/firestore/lite";
-import {
-  getAuth,
-  signOut,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-  onAuthStateChanged,
-} from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// Follow this pattern to import other Firebase services
-// import { } from 'firebase/<service>';
 
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 const firebaseConfig = {
   apiKey: "AIzaSyAjFq6_3WOD4U4AK9znLm_JYJPhDd1mIjE",
   authDomain: "saltwater-success.firebaseapp.com",
@@ -35,35 +31,29 @@ const firebaseConfig = {
   measurementId: "G-J63S7FV622",
 };
 
-//firebase.initializeApp(firebaseConfig);
-
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const storage = getStorage(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 export {
   app,
   auth,
-  storage,
   db,
-  getAuth,
+  storage,
   doc,
+  addDoc,
   getDoc,
   setDoc,
-  addDoc,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-  onAuthStateChanged,
+  getDocs,
+  collection,
+  query,
+  where,
+  deleteDoc,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
   ref,
   uploadBytes,
   getDownloadURL,
-  signOut,
-  collection,
-  query,
-  getDocs,
-  where,
-  deleteDoc,
 };

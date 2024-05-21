@@ -15,115 +15,32 @@
                   Pregled esencijalne opreme za različite tehnike ribolova
                 </p>
                 <div class="equipment-info">
-                  <div class="equipment-detail">
+                  <div
+                    class="equipment-detail"
+                    v-for="(equipment, index) in equipmentList"
+                    :key="index"
+                  >
                     <img
-                      src="@/assets/spinning_rod.png"
-                      alt="Spinning štap"
+                      :src="equipment.image"
+                      :alt="equipment.name"
                       class="equipment-img"
                     />
                     <div class="equipment-text">
-                      <h3>Spinning štapovi</h3>
+                      <h3>{{ equipment.name }}</h3>
+                      <p><strong>Primjeri:</strong> {{ equipment.examples }}</p>
                       <p>
-                        <strong>Primjeri:</strong> Shimano Beastmaster, Daiwa
-                        BG, Penn Battalion.
+                        <strong>Karakteristike:</strong>
+                        {{ equipment.characteristics }}
                       </p>
                       <p>
-                        <strong>Karakteristike:</strong> Lagani i snažni,
-                        idealni za brzo bacanje i povlačenje.
-                      </p>
-                      <p>
-                        <strong>Preporuke:</strong> Odlični za lov na plitkim i
-                        srednjim dubinama, posebno za lov na brancina i oradu.
+                        <strong>Preporuke:</strong>
+                        {{ equipment.recommendations }}
                       </p>
                       <div class="feedback-buttons">
-                        <v-btn
-                          color="blue"
-                          @click="likeEquipment('Spinning štapovi')"
-                        >
+                        <v-btn color="blue" @click="likeEquipment(equipment)">
                           <i class="fas fa-thumbs-up"></i> Like
                         </v-btn>
-                        <v-btn
-                          color="red"
-                          @click="dislikeEquipment('Spinning štapovi')"
-                        >
-                          <i class="fas fa-thumbs-down"></i> Dislike
-                        </v-btn>
-                      </div>
-                    </div>
-                  </div>
-
-                  <v-divider class="divider"></v-divider>
-
-                  <div class="equipment-detail reverse">
-                    <div class="equipment-text">
-                      <h3>Jigging štapovi</h3>
-                      <p>
-                        <strong>Primjeri:</strong> Shimano Trevala, Daiwa
-                        Saltiga, Okuma Cedros.
-                      </p>
-                      <p>
-                        <strong>Karakteristike:</strong> Kratki i snažni štapovi
-                        dizajnirani za duboke vode.
-                      </p>
-                      <p>
-                        <strong>Preporuke:</strong> Idealni za lov većih riba
-                        poput zubatca u dubokim vodama.
-                      </p>
-                      <div class="feedback-buttons">
-                        <v-btn
-                          color="blue"
-                          @click="likeEquipment('Jigging štapovi')"
-                        >
-                          <i class="fas fa-thumbs-up"></i> Like
-                        </v-btn>
-                        <v-btn
-                          color="red"
-                          @click="dislikeEquipment('Jigging štapovi')"
-                        >
-                          <i class="fas fa-thumbs-down"></i> Dislike
-                        </v-btn>
-                      </div>
-                    </div>
-                    <img
-                      src="@/assets/jigging_rod.png"
-                      alt="Jigging štap"
-                      class="equipment-img"
-                    />
-                  </div>
-
-                  <v-divider class="divider"></v-divider>
-
-                  <div class="equipment-detail">
-                    <img
-                      src="@/assets/trolling_rod.png"
-                      alt="Trolling štap"
-                      class="equipment-img"
-                    />
-                    <div class="equipment-text">
-                      <h3>Trolling štapovi</h3>
-                      <p>
-                        <strong>Primjeri:</strong> Penn International V, Shimano
-                        TLD, Daiwa Saltist.
-                      </p>
-                      <p>
-                        <strong>Karakteristike:</strong> Izuzetno snažni štapovi
-                        za ribolov s plovila.
-                      </p>
-                      <p>
-                        <strong>Preporuke:</strong> Najbolji izbor za daleke
-                        izlete na otvoreno more.
-                      </p>
-                      <div class="feedback-buttons">
-                        <v-btn
-                          color="blue"
-                          @click="likeEquipment('Trolling štapovi')"
-                        >
-                          <i class="fas fa-thumbs-up"></i> Like
-                        </v-btn>
-                        <v-btn
-                          color="red"
-                          @click="dislikeEquipment('Trolling štapovi')"
-                        >
+                        <v-btn color="red" @click="dislikeEquipment(equipment)">
                           <i class="fas fa-thumbs-down"></i> Dislike
                         </v-btn>
                       </div>
@@ -141,20 +58,58 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import spinningRodImage from "@/assets/spinning_rod.png";
+import jiggingRodImage from "@/assets/jigging_rod.png";
+import trollingRodImage from "@/assets/trolling_rod.png";
 
 export default {
   name: "FishingGear",
   components: {
     NavBar,
   },
+  data() {
+    return {
+      equipmentList: [
+        {
+          name: "Spinning štapovi",
+          image: spinningRodImage,
+          examples: "Shimano Beastmaster, Daiwa BG, Penn Battalion.",
+          characteristics:
+            "Lagani i snažni, idealni za brzo bacanje i povlačenje.",
+          recommendations:
+            "Odlični za lov na plitkim i srednjim dubinama, posebno za lov na brancina i oradu.",
+        },
+        {
+          name: "Jigging štapovi",
+          image: jiggingRodImage,
+          examples: "Shimano Trevala, Daiwa Saltiga, Okuma Cedros.",
+          characteristics:
+            "Kratki i snažni štapovi dizajnirani za duboke vode.",
+          recommendations:
+            "Idealni za lov većih riba poput zubatca u dubokim vodama.",
+        },
+        {
+          name: "Trolling štapovi",
+          image: trollingRodImage,
+          examples: "Penn International V, Shimano TLD, Daiwa Saltist.",
+          characteristics: "Izuzetno snažni štapovi za ribolov s plovila.",
+          recommendations: "Najbolji izbor za daleke izlete na otvoreno more.",
+        },
+      ],
+    };
+  },
   methods: {
     likeEquipment(equipment) {
-      
-      console.log(`User liked ${equipment}`);
+      let likedEquipment =
+        JSON.parse(localStorage.getItem("likedEquipment")) || [];
+      if (!likedEquipment.some((e) => e.name === equipment.name)) {
+        likedEquipment.push(equipment);
+        localStorage.setItem("likedEquipment", JSON.stringify(likedEquipment));
+      }
+      console.log(`User liked ${equipment.name}`);
     },
     dislikeEquipment(equipment) {
-      
-      console.log(`User disliked ${equipment}`);
+      console.log(`User disliked ${equipment.name}`);
     },
   },
 };
@@ -174,7 +129,7 @@ export default {
   justify-content: center;
   text-align: center;
   padding: 20px;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .overlay {
@@ -183,15 +138,15 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3); 
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 1;
 }
 
 .info-card {
   position: relative;
   z-index: 2;
-  max-height: 80vh; 
-  overflow-y: auto; 
+  max-height: 80vh;
+  overflow-y: auto;
   background-color: rgba(255, 255, 255, 0.85);
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -214,10 +169,6 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.equipment-detail.reverse {
-  flex-direction: row-reverse;
 }
 
 .equipment-text {
@@ -248,7 +199,7 @@ export default {
 }
 
 .feedback-buttons .v-btn:first-of-type {
-  background-color: #1e88e5; 
+  background-color: #1e88e5;
 }
 
 .feedback-buttons .v-btn:first-of-type:hover {
@@ -256,7 +207,7 @@ export default {
 }
 
 .feedback-buttons .v-btn:last-of-type {
-  background-color: #f44336; 
+  background-color: #f44336;
 }
 
 .feedback-buttons .v-btn:last-of-type:hover {

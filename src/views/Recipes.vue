@@ -225,13 +225,16 @@ export default {
       this.selectedFish = fish;
     },
     likeRecipe() {
+      let likedRecipes = JSON.parse(localStorage.getItem("likedRecipes")) || [];
+      if (!likedRecipes.some((r) => r.name === this.selectedFish.name)) {
+        likedRecipes.push(this.selectedFish);
+        localStorage.setItem("likedRecipes", JSON.stringify(likedRecipes));
+      }
       this.selectedFish = null;
-
       console.log("User liked the recipe");
     },
     dislikeRecipe() {
       this.selectedFish = null;
-
       console.log("User disliked the recipe");
     },
   },
