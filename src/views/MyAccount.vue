@@ -189,8 +189,8 @@ import {
   getDoc,
   setDoc,
   deleteDoc,
-  updatePassword,
   reauthenticateWithCredential,
+  updatePassword,
   EmailAuthProvider,
 } from "../firebase";
 
@@ -213,6 +213,7 @@ export default {
       confirmPassword: "",
       showPassword: false,
       confirmDelete: false,
+      currentPassword: "",
     };
   },
   created() {
