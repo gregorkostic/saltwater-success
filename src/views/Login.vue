@@ -75,9 +75,7 @@
 </template>
 
 <script>
-import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
-
-const auth = getAuth();
+import { signInWithEmailAndPassword, auth } from "firebase/auth";
 
 export default {
   data() {

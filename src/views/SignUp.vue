@@ -89,12 +89,13 @@
 </template>
 
 <script>
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-const auth = getAuth();
-const db = getFirestore();
-
+import {
+  doc,
+  auth,
+  db,
+  setDoc,
+  createUserWithEmailAndPassword,
+} from "@/firebase";
 export default {
   data() {
     return {

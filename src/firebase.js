@@ -1,7 +1,28 @@
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
+import { initializeApp } from "firebase/app";
+import {
+  getAuth,
+  signOut,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  onAuthStateChanged,
+  reauthenticateWithCredential,
+  updatePassword,
+  EmailAuthProvider,
+} from "firebase/auth";
+import {
+  getFirestore,
+  doc,
+  addDoc,
+  getDoc,
+  setDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+  deleteDoc,
+} from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAjFq6_3WOD4U4AK9znLm_JYJPhDd1mIjE",
@@ -14,48 +35,18 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storage = firebase.storage();
+const app = initializeApp(firebaseConfig);
 
-// Export required functions from firebase/auth
-const {
-  getAuth,
-  signOut,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-  onAuthStateChanged,
-  reauthenticateWithCredential,
-  updatePassword,
-  EmailAuthProvider,
-} = firebase.auth();
-
-// Export required functions from firebase/firestore
-const {
-  doc,
-  addDoc,
-  getDoc,
-  setDoc,
-  getDocs,
-  getFirestore,
-  collection,
-  query,
-  where,
-  deleteDoc,
-} = firebase.firestore();
-
-// Export required functions from firebase/storage
-const { ref, uploadBytes, getDownloadURL } = firebase.storage();
+// Get services
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
 export {
   app,
   auth,
   db,
   storage,
-  firebase, // Export firebase to use additional methods
-  getAuth,
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -69,7 +60,6 @@ export {
   getDoc,
   setDoc,
   getDocs,
-  getFirestore,
   collection,
   query,
   where,
