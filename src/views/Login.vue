@@ -75,7 +75,8 @@
 </template>
 
 <script>
-import { signInWithEmailAndPassword, auth } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase"; // Ensure this path is correct
 
 export default {
   data() {

@@ -13,13 +13,8 @@ import {
 import {
   getFirestore,
   doc,
-  addDoc,
   getDoc,
   setDoc,
-  getDocs,
-  collection,
-  query,
-  where,
   deleteDoc,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -34,16 +29,12 @@ const firebaseConfig = {
   measurementId: "G-J63S7FV622",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Get services
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
 export {
-  app,
   auth,
   db,
   storage,
@@ -56,13 +47,8 @@ export {
   updatePassword,
   EmailAuthProvider,
   doc,
-  addDoc,
   getDoc,
   setDoc,
-  getDocs,
-  collection,
-  query,
-  where,
   deleteDoc,
   ref,
   uploadBytes,

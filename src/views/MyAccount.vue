@@ -17,7 +17,8 @@
                 />
               </v-avatar>
               <v-btn small color="primary" @click="triggerFileInput">
-                Change Picture
+                <span v-if="!user.profilePic">Add Picture</span>
+                <span v-else>Change Picture</span>
               </v-btn>
               <v-btn
                 small
@@ -26,6 +27,14 @@
                 v-if="user.profilePic"
               >
                 Remove Picture
+              </v-btn>
+              <v-btn
+                small
+                color="success"
+                @click="saveProfilePic"
+                v-if="user.profilePic"
+              >
+                Save Picture
               </v-btn>
               <input
                 type="file"
@@ -43,11 +52,13 @@
                   v-model="user.name"
                   label="First name"
                   outlined
+                  readonly
                 ></v-text-field>
                 <v-text-field
                   v-model="user.surname"
                   label="Last name"
                   outlined
+                  readonly
                 ></v-text-field>
                 <v-text-field
                   v-model="user.email"
@@ -55,7 +66,6 @@
                   outlined
                   readonly
                 ></v-text-field>
-                <v-btn color="primary" @click="updateProfile">Save</v-btn>
               </v-card-text>
             </v-card>
           </v-col>
@@ -139,6 +149,13 @@
               <v-card-title>Changing the password</v-card-title>
               <v-card-text>
                 <v-text-field
+                  v-model="currentPassword"
+                  :type="showPassword ? 'text' : 'password'"
+                  label="Enter current password"
+                  :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="togglePasswordVisibility"
+                ></v-text-field>
+                <v-text-field
                   v-model="newPassword"
                   :type="showPassword ? 'text' : 'password'"
                   label="Enter new password"
@@ -185,6 +202,7 @@ import NavBar from "@/components/NavBar.vue";
 import {
   auth,
   db,
+  storage,
   doc,
   getDoc,
   setDoc,
@@ -192,6 +210,9 @@ import {
   reauthenticateWithCredential,
   updatePassword,
   EmailAuthProvider,
+  ref,
+  uploadBytes,
+  getDownloadURL,
 } from "../firebase";
 
 export default {
@@ -209,11 +230,11 @@ export default {
       userPosts: JSON.parse(localStorage.getItem("userPosts")) || [],
       likedEquipment: JSON.parse(localStorage.getItem("likedEquipment")) || [],
       likedRecipes: JSON.parse(localStorage.getItem("likedRecipes")) || [],
+      currentPassword: "",
       newPassword: "",
       confirmPassword: "",
       showPassword: false,
       confirmDelete: false,
-      currentPassword: "",
     };
   },
   created() {
@@ -229,6 +250,7 @@ export default {
           const userData = userDoc.data();
           this.user.name = userData.Name;
           this.user.surname = userData.Surname;
+          this.user.profilePic = userData.profilePic || this.defaultProfilePic;
         }
       }
     },
@@ -248,19 +270,30 @@ export default {
     removeProfilePic() {
       this.user.profilePic = "";
     },
+    async saveProfilePic() {
+      try {
+        const user = auth.currentUser;
+        if (user && this.user.profilePic) {
+          const storageRef = ref(storage, `profilePictures/${user.email}`);
+          const response = await fetch(this.user.profilePic);
+          const blob = await response.blob();
+          await uploadBytes(storageRef, blob);
+          const downloadURL = await getDownloadURL(storageRef);
+          this.user.profilePic = downloadURL;
+          await setDoc(doc(db, "Users", user.email), {
+            Name: this.user.name,
+            Surname: this.user.surname,
+            Email: this.user.email,
+            profilePic: downloadURL,
+          });
+          alert("Profile picture saved successfully!");
+        }
+      } catch (error) {
+        alert("Error saving profile picture: " + error.message);
+      }
+    },
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
-    },
-    async updateProfile() {
-      const user = auth.currentUser;
-      if (user) {
-        await setDoc(doc(db, "Users", user.email), {
-          Name: this.user.name,
-          Surname: this.user.surname,
-          Email: this.user.email,
-        });
-        alert("Profile updated successfully!");
-      }
     },
     async updatePassword() {
       if (this.newPassword !== this.confirmPassword) {
@@ -286,10 +319,15 @@ export default {
       try {
         const user = auth.currentUser;
         if (user) {
+          const credential = EmailAuthProvider.credential(
+            user.email,
+            this.currentPassword
+          );
+          await reauthenticateWithCredential(user, credential);
           await deleteDoc(doc(db, "Users", user.email));
           await user.delete();
           alert("Account deleted successfully!");
-          this.$router.push("/signup");
+          this.$router.push("/landing-page");
         }
       } catch (error) {
         alert("Error deleting account: " + error.message);

@@ -89,13 +89,10 @@
 </template>
 
 <script>
-import {
-  doc,
-  auth,
-  db,
-  setDoc,
-  createUserWithEmailAndPassword,
-} from "@/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "@/firebase"; // Ensure this path is correct
+
 export default {
   data() {
     return {
@@ -171,6 +168,7 @@ export default {
             this.password
           );
           const user = userCredential.user;
+          console.log("User created:", user);
 
           await setDoc(doc(db, "Users", this.email.toLowerCase()), {
             Email: this.email,
@@ -182,6 +180,7 @@ export default {
           alert("Registration successful!");
           this.$router.push("/home");
         } catch (error) {
+          console.error("Error during registration:", error); // Add this line
           alert("An error occurred: " + error.message);
         }
       }
