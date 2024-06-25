@@ -91,7 +91,7 @@
 <script>
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "@/firebase"; // Ensure this path is correct
+import { auth, db } from "@/firebase";
 
 export default {
   data() {

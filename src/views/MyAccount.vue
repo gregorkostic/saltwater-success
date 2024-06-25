@@ -245,13 +245,15 @@ export default {
       const user = auth.currentUser;
       if (user) {
         this.user.email = user.email;
-        const userDoc = await getDoc(doc(db, "Users", user.email));
+        const userDoc = await getDoc(doc(db, "Users", user.uid));
         if (userDoc.exists()) {
           const userData = userDoc.data();
           this.user.name = userData.Name;
           this.user.surname = userData.Surname;
           this.user.profilePic = userData.profilePic || this.defaultProfilePic;
         }
+      } else {
+        console.error("No authenticated user found");
       }
     },
     uploadProfilePic(event) {
@@ -274,13 +276,13 @@ export default {
       try {
         const user = auth.currentUser;
         if (user && this.user.profilePic) {
-          const storageRef = ref(storage, `profilePictures/${user.email}`);
+          const storageRef = ref(storage, `profilePictures/${user.uid}`);
           const response = await fetch(this.user.profilePic);
           const blob = await response.blob();
           await uploadBytes(storageRef, blob);
           const downloadURL = await getDownloadURL(storageRef);
           this.user.profilePic = downloadURL;
-          await setDoc(doc(db, "Users", user.email), {
+          await setDoc(doc(db, "Users", user.uid), {
             Name: this.user.name,
             Surname: this.user.surname,
             Email: this.user.email,
@@ -324,7 +326,7 @@ export default {
             this.currentPassword
           );
           await reauthenticateWithCredential(user, credential);
-          await deleteDoc(doc(db, "Users", user.email));
+          await deleteDoc(doc(db, "Users", user.uid));
           await user.delete();
           alert("Account deleted successfully!");
           this.$router.push("/landing-page");
