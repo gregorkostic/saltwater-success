@@ -185,9 +185,8 @@
                   color="primary"
                   @click="deleteAccount"
                   :disabled="!confirmDelete"
+                  >Delete Account</v-btn
                 >
-                  Delete Account
-                </v-btn>
               </v-card-text>
             </v-card>
           </v-col>
@@ -213,6 +212,10 @@ import {
   ref,
   uploadBytes,
   getDownloadURL,
+  query,
+  collection,
+  where,
+  getDocs,
 } from "../firebase";
 
 export default {
@@ -227,7 +230,7 @@ export default {
         profilePic: "",
       },
       defaultProfilePic: require("@/assets/default_profile_img.jpg"),
-      userPosts: JSON.parse(localStorage.getItem("userPosts")) || [],
+      userPosts: [],
       likedEquipment: JSON.parse(localStorage.getItem("likedEquipment")) || [],
       likedRecipes: JSON.parse(localStorage.getItem("likedRecipes")) || [],
       currentPassword: "",
@@ -239,6 +242,7 @@ export default {
   },
   created() {
     this.loadUserProfile();
+    this.loadUserPosts(); // Load user posts when the component is created
   },
   methods: {
     async loadUserProfile() {
@@ -252,8 +256,23 @@ export default {
           this.user.surname = userData.Surname;
           this.user.profilePic = userData.profilePic || this.defaultProfilePic;
         }
-      } else {
-        console.error("No authenticated user found");
+      }
+    },
+    async loadUserPosts() {
+      const user = auth.currentUser;
+      if (user) {
+        const q = query(
+          collection(db, "posts"),
+          where("userId", "==", user.uid)
+        );
+        const querySnapshot = await getDocs(q);
+        const posts = [];
+        querySnapshot.forEach((doc) => {
+          let postData = doc.data();
+          postData.id = doc.id;
+          posts.push(postData);
+        });
+        this.userPosts = posts;
       }
     },
     uploadProfilePic(event) {
@@ -276,7 +295,10 @@ export default {
       try {
         const user = auth.currentUser;
         if (user && this.user.profilePic) {
-          const storageRef = ref(storage, `profilePictures/${user.uid}`);
+          const storageRef = ref(
+            storage,
+            `profilePictures/${user.uid}/${user.email}`
+          );
           const response = await fetch(this.user.profilePic);
           const blob = await response.blob();
           await uploadBytes(storageRef, blob);
@@ -348,7 +370,16 @@ export default {
     },
     removeUserPost(postId) {
       this.userPosts = this.userPosts.filter((post) => post.id !== postId);
-      localStorage.setItem("userPosts", JSON.stringify(this.userPosts));
+      this.deletePost(postId);
+    },
+    async deletePost(postId) {
+      try {
+        await deleteDoc(doc(db, "posts", postId));
+        this.userPosts = this.userPosts.filter((post) => post.id !== postId);
+        alert("Post deleted successfully!");
+      } catch (error) {
+        alert("Error deleting post: " + error.message);
+      }
     },
   },
 };

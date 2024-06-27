@@ -170,7 +170,7 @@ export default {
           const user = userCredential.user;
           console.log("User created:", user);
 
-          await setDoc(doc(db, "Users", this.email.toLowerCase()), {
+          await setDoc(doc(db, "Users", user.uid), {
             Email: this.email,
             Name: this.name,
             Surname: this.surname,

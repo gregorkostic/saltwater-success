@@ -111,6 +111,23 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import { v4 as uuidv4 } from "uuid";
+import {
+  auth,
+  db,
+  storage,
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+  getDoc,
+  setDoc,
+  uploadBytes,
+  getDownloadURL,
+  ref,
+} from "@/firebase";
 
 export default {
   name: "UserExperiences",
@@ -119,7 +136,7 @@ export default {
     return {
       newPost: { title: "", content: "", image: null },
       newComment: { content: "" },
-      posts: JSON.parse(localStorage.getItem("userPosts")) || [],
+      posts: [],
     };
   },
   computed: {
@@ -127,24 +144,58 @@ export default {
       return this.newPost.title && this.newPost.content;
     },
   },
+  created() {
+    this.loadPosts();
+  },
   methods: {
-    createPost() {
+    async loadPosts() {
+      try {
+        const q = query(collection(db, "posts"));
+        const querySnapshot = await getDocs(q);
+        const posts = [];
+        querySnapshot.forEach((doc) => {
+          let postData = doc.data();
+          postData.id = doc.id;
+          posts.push(postData);
+        });
+        this.posts = posts;
+      } catch (error) {
+        console.error("Error loading posts: ", error);
+      }
+    },
+    async createPost() {
       if (this.isFormValid) {
-        const newPost = {
-          id: uuidv4(),
-          title: this.newPost.title,
-          content: this.newPost.content,
-          image: this.newPost.image
-            ? URL.createObjectURL(this.newPost.image)
-            : null,
-          likes: 0,
-          dislikes: 0,
-          userReaction: null,
-          comments: [],
-        };
-        this.posts.push(newPost);
-        localStorage.setItem("userPosts", JSON.stringify(this.posts));
-        this.resetNewPost();
+        try {
+          const user = auth.currentUser;
+          const newPost = {
+            title: this.newPost.title,
+            content: this.newPost.content,
+            image: this.newPost.image
+              ? await this.uploadImage(this.newPost.image)
+              : null,
+            likes: 0,
+            dislikes: 0,
+            userReaction: null,
+            comments: [],
+            userId: user.uid,
+            userEmail: user.email,
+          };
+          const docRef = await addDoc(collection(db, "posts"), newPost);
+          newPost.id = docRef.id;
+          this.posts.push(newPost);
+          this.resetNewPost();
+        } catch (error) {
+          console.error("Error creating post: ", error);
+        }
+      }
+    },
+    async uploadImage(file) {
+      try {
+        const storageRef = ref(storage, `posts/${file.name}`);
+        await uploadBytes(storageRef, file);
+        return await getDownloadURL(storageRef);
+      } catch (error) {
+        console.error("Error uploading image: ", error);
       }
     },
     resetNewPost() {
@@ -163,7 +214,7 @@ export default {
         post.likes--;
         post.userReaction = null;
       }
-      localStorage.setItem("userPosts", JSON.stringify(this.posts));
+      this.updatePost(post);
     },
     toggleDislike(post) {
       if (post.userReaction === "like") {
@@ -176,11 +227,31 @@ export default {
         post.dislikes--;
         post.userReaction = null;
       }
-      localStorage.setItem("userPosts", JSON.stringify(this.posts));
+      this.updatePost(post);
     },
-    deletePost(postId) {
-      this.posts = this.posts.filter((post) => post.id !== postId);
-      localStorage.setItem("userPosts", JSON.stringify(this.posts));
+    async updatePost(post) {
+      try {
+        await setDoc(doc(db, "posts", post.id), post, { merge: true });
+      } catch (error) {
+        console.error("Error updating post: ", error);
+      }
+    },
+    async deletePost(postId) {
+      try {
+        const postDoc = await getDoc(doc(db, "posts", postId));
+        if (
+          postDoc.exists() &&
+          postDoc.data().userId === auth.currentUser.uid
+        ) {
+          await deleteDoc(doc(db, "posts", postId));
+          this.posts = this.posts.filter((post) => post.id !== postId);
+          alert("Post deleted successfully!");
+        } else {
+          alert("You do not have permission to delete this post.");
+        }
+      } catch (error) {
+        console.error("Error deleting post: ", error);
+      }
     },
     addComment(post) {
       if (this.newComment.content.trim()) {
@@ -191,7 +262,7 @@ export default {
         };
         post.comments.push(newComment);
         this.newComment.content = "";
-        localStorage.setItem("userPosts", JSON.stringify(this.posts));
+        this.updatePost(post);
       }
     },
   },
