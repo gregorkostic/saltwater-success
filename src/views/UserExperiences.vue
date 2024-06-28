@@ -37,8 +37,9 @@
                   color="primary"
                   @click="createPost"
                   :disabled="!isFormValid"
-                  >Objavi</v-btn
                 >
+                  Objavi
+                </v-btn>
               </v-card-text>
             </v-card>
           </v-col>
@@ -95,9 +96,9 @@
                     v-model="newComment.content"
                     outlined
                   ></v-text-field>
-                  <v-btn color="primary" @click="addComment(post)"
-                    >Komentiraj</v-btn
-                  >
+                  <v-btn color="primary" @click="addComment(post)">
+                    Komentiraj
+                  </v-btn>
                 </div>
               </v-card-text>
             </v-card>
@@ -167,12 +168,16 @@ export default {
       if (this.isFormValid) {
         try {
           const user = auth.currentUser;
+          let imageURL = null;
+          if (this.newPost.image) {
+            const storageRef = ref(storage, `posts/${this.newPost.image.name}`);
+            await uploadBytes(storageRef, this.newPost.image);
+            imageURL = await getDownloadURL(storageRef);
+          }
           const newPost = {
             title: this.newPost.title,
             content: this.newPost.content,
-            image: this.newPost.image
-              ? await this.uploadImage(this.newPost.image)
-              : null,
+            image: imageURL,
             likes: 0,
             dislikes: 0,
             userReaction: null,
@@ -187,15 +192,6 @@ export default {
         } catch (error) {
           console.error("Error creating post: ", error);
         }
-      }
-    },
-    async uploadImage(file) {
-      try {
-        const storageRef = ref(storage, `posts/${file.name}`);
-        await uploadBytes(storageRef, file);
-        return await getDownloadURL(storageRef);
-      } catch (error) {
-        console.error("Error uploading image: ", error);
       }
     },
     resetNewPost() {

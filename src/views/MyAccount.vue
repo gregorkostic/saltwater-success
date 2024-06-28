@@ -177,6 +177,13 @@
             <v-card class="info-card">
               <v-card-title>Deleting the account</v-card-title>
               <v-card-text>
+                <v-text-field
+                  v-model="deletePassword"
+                  :type="showPassword ? 'text' : 'password'"
+                  label="Enter current password to delete account"
+                  :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="togglePasswordVisibility"
+                ></v-text-field>
                 <v-checkbox
                   v-model="confirmDelete"
                   label="Confirm that I want to delete my account"
@@ -216,6 +223,7 @@ import {
   collection,
   where,
   getDocs,
+  deleteObject,
 } from "../firebase";
 
 export default {
@@ -238,6 +246,7 @@ export default {
       confirmPassword: "",
       showPassword: false,
       confirmDelete: false,
+      deletePassword: "",
     };
   },
   created() {
@@ -288,8 +297,27 @@ export default {
     triggerFileInput() {
       this.$refs.fileInput.click();
     },
-    removeProfilePic() {
-      this.user.profilePic = "";
+    async removeProfilePic() {
+      const user = auth.currentUser;
+      if (user && this.user.profilePic) {
+        const storageRef = ref(
+          storage,
+          `profilePictures/${user.uid}/${user.email}`
+        );
+        try {
+          await deleteObject(storageRef);
+          this.user.profilePic = this.defaultProfilePic;
+          await setDoc(doc(db, "Users", user.uid), {
+            Name: this.user.name,
+            Surname: this.user.surname,
+            Email: this.user.email,
+            profilePic: "",
+          });
+          alert("Profile picture removed successfully!");
+        } catch (error) {
+          alert("Error removing profile picture: " + error.message);
+        }
+      }
     },
     async saveProfilePic() {
       try {
@@ -345,13 +373,13 @@ export default {
         if (user) {
           const credential = EmailAuthProvider.credential(
             user.email,
-            this.currentPassword
+            this.deletePassword
           );
           await reauthenticateWithCredential(user, credential);
           await deleteDoc(doc(db, "Users", user.uid));
           await user.delete();
           alert("Account deleted successfully!");
-          this.$router.push("/landing-page");
+          this.$router.push("/");
         }
       } catch (error) {
         alert("Error deleting account: " + error.message);
